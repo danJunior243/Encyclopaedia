@@ -1,0 +1,78 @@
+﻿@model Encyclopaedia.Web.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Accueil";
+}
+
+<!-- ── HERO ── -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">La connaissance à portée de main</h1>
+        <p class="hero-subtitle">Des milliers d'articles sur les Sciences, l'Histoire et la Nature</p>
+        <form class="hero-search" asp-controller="Search" asp-action="Index" method="get">
+            <input type="text" name="q" placeholder="Rechercher un article…" class="hero-search-input" />
+            <button type="submit" class="hero-search-btn">Rechercher</button>
+        </form>
+    </div>
+</section>
+
+<!-- ── DOMAINES ── -->
+<section class="domains-section">
+    <div class="container">
+        <h2 class="section-title">Explorer par domaine</h2>
+        <div class="domains-grid">
+            <a class="domain-card sciences" asp-controller="Domain" asp-action="Index" asp-route-slug="sciences">
+                <div class="domain-card-icon">🔬</div>
+                <div class="domain-card-name">Sciences</div>
+                <div class="domain-card-desc">Biologie, Physique, Chimie, Astronomie…</div>
+            </a>
+            <a class="domain-card histoire" asp-controller="Domain" asp-action="Index" asp-route-slug="histoire">
+                <div class="domain-card-icon">📜</div>
+                <div class="domain-card-name">Histoire</div>
+                <div class="domain-card-desc">Civilisations, Guerres, Personnages…</div>
+            </a>
+            <a class="domain-card nature" asp-controller="Domain" asp-action="Index" asp-route-slug="nature">
+                <div class="domain-card-icon">🌿</div>
+                <div class="domain-card-name">Nature</div>
+                <div class="domain-card-desc">Faune, Flore, Écosystèmes…</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+
+<!-- ── ARTICLES EN VEDETTE ── -->
+<section class="featured-section">
+    <div class="container">
+        <h2 class="section-title">Articles récents</h2>
+        <div class="featured-grid">
+            <div class="featured-main">
+                @if (Model.RecentArticles.Any())
+                {
+                    var first = Model.RecentArticles.First();
+                    <div class="article-card-big">
+                        <div class="article-card-domain sciences-text">@first.Category.Domain.Slug</div>
+                        <h3 class="article-card-title">@first.Category.Slug</h3>
+                        <a href="#" class="article-card-link">Lire l'article →</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="article-card-big">
+                        <p style="color:var(--text-dim)">Aucun article publié pour l'instant.</p>
+                    </div>
+                }
+            </div>
+            <div class="featured-side">
+                @foreach (var article in Model.PopularArticles.Take(3))
+                {
+                    <div class="article-card-small">
+                        <div class="article-card-domain sciences-text">@article.Category.Slug</div>
+                        <h3 class="article-card-title-sm">@article.Category.Slug</h3>
+                        <a href="#" class="article-card-link">Lire →</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>

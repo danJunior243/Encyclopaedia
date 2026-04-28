@@ -1,0 +1,466 @@
+﻿/* ── VARIABLES ── */
+:root {
+    --gold: #FFFFFF;
+    --navy: #0A0A0A;
+    --cream: #FFFFFF;
+    --text: #1A1A1A;
+    --text-dim: #6B6B6B;
+    --border: #E5E2DA;
+    --sciences: #2A6099;
+    --histoire: #8B2635;
+    --nature: #2D6A4F;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Inter', sans-serif;
+}
+
+/* ── RESET ── */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--cream);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+    a:hover {
+        color: var(--gold);
+    }
+
+/* ── HEADER ── */
+.enc-header {
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.enc-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    gap: 1.5rem;
+}
+
+/* Logo */
+.enc-logo {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+    .enc-logo:hover {
+        color: var(--gold);
+        opacity: 0.85;
+    }
+
+/* Recherche */
+.enc-search-form {
+    display: flex;
+    flex: 1;
+    max-width: 500px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.enc-search-input {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: white;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    padding: 0.55rem 1rem;
+    outline: none;
+}
+
+    .enc-search-input::placeholder {
+        color: rgba(255,255,255,0.4);
+    }
+
+.enc-search-btn {
+    background: var(--gold);
+    border: none;
+    padding: 0.55rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
+}
+
+    .enc-search-btn:hover {
+        opacity: 0.85;
+    }
+
+/* Navigation droite */
+.enc-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    white-space: nowrap;
+}
+
+/* Sélecteur de langue */
+.enc-lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+}
+
+    .enc-lang-switcher a {
+        color: rgba(255,255,255,0.7);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        transition: color 0.2s;
+    }
+
+        .enc-lang-switcher a:hover {
+            color: var(--gold);
+        }
+
+/* Bouton connexion */
+.enc-login-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.8);
+    padding: 0.4rem 1rem;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+    .enc-login-btn:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+    }
+
+/* Navigation domaines */
+.enc-domain-nav {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+}
+
+.enc-domain-link {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    padding: 0.65rem 1.5rem;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+    .enc-domain-link:hover {
+        color: white;
+    }
+
+    .enc-domain-link.sciences:hover {
+        border-bottom-color: var(--sciences);
+        color: white;
+    }
+
+    .enc-domain-link.histoire:hover {
+        border-bottom-color: var(--histoire);
+        color: white;
+    }
+
+    .enc-domain-link.nature:hover {
+        border-bottom-color: var(--nature);
+        color: white;
+    }
+
+/* ── FOOTER ── */
+.enc-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.6);
+    margin-top: 4rem;
+    padding: 3rem 0 1.5rem;
+}
+
+.enc-footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.enc-footer-logo {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+}
+
+.enc-footer-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.45);
+}
+
+.enc-footer-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 1rem;
+}
+
+.enc-footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+    .enc-footer-links a {
+        font-size: 0.88rem;
+        color: rgba(255,255,255,0.6);
+        transition: color 0.2s;
+    }
+
+        .enc-footer-links a:hover {
+            color: var(--gold);
+        }
+
+.enc-footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 1.5rem;
+    font-size: 0.8rem;
+    text-align: center;
+    color: rgba(255,255,255,0.3);
+}
+
+/* ── HERO ── */
+.hero {
+    background: #0A0A0A;
+    color: white;
+    padding: 6rem 2rem;
+    text-align: center;
+}
+
+.hero-title {
+    font-family: var(--font-serif);
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2.5rem;
+}
+
+.hero-search {
+    display: flex;
+    max-width: 580px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.hero-search-input {
+    flex: 1;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    outline: none;
+    color: var(--text);
+}
+
+.hero-search-btn {
+    background: white;
+    color: #0A0A0A;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .hero-search-btn:hover {
+        background: #f0f0f0;
+    }
+
+/* ── SECTIONS ── */
+.section-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: var(--text);
+}
+
+/* ── DOMAINES ── */
+.domains-section {
+    padding: 4rem 0;
+    background: white;
+}
+
+.domains-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.domain-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: block;
+}
+
+    .domain-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .domain-card.sciences:hover {
+        border-color: var(--sciences);
+    }
+
+    .domain-card.histoire:hover {
+        border-color: var(--histoire);
+    }
+
+    .domain-card.nature:hover {
+        border-color: var(--nature);
+    }
+
+.domain-card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.domain-card-name {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.domain-card-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+/* ── ARTICLES EN VEDETTE ── */
+.featured-section {
+    padding: 4rem 0;
+    background: var(--cream);
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+.article-card-big {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 2.5rem;
+    height: 100%;
+}
+
+.article-card-small {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.article-card-domain {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.sciences-text {
+    color: var(--sciences);
+}
+
+.histoire-text {
+    color: var(--histoire);
+}
+
+.nature-text {
+    color: var(--nature);
+}
+
+.article-card-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text);
+}
+
+.article-card-title-sm {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.article-card-excerpt {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.article-card-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--text);
+    padding-bottom: 1px;
+    transition: opacity 0.2s;
+    margin-top: auto;
+}
+
+    .article-card-link:hover {
+        opacity: 0.6;
+        color: var(--text);
+    }

@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Encyclopædia</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+
+    <!-- ── HEADER ── -->
+    <header class="enc-header">
+        <div class="container-fluid enc-header-inner">
+
+            <!-- Logo -->
+            <a class="enc-logo" asp-controller="Home" asp-action="Index">
+                Encyclopædia
+            </a>
+
+            <!-- Barre de recherche -->
+            <form class="enc-search-form" asp-controller="Search" asp-action="Index" method="get">
+                <input type="text" name="q" class="enc-search-input" placeholder="Rechercher un article…" />
+                <button type="submit" class="enc-search-btn">🔍</button>
+            </form>
+
+            <!-- Navigation droite -->
+            <div class="enc-nav-right">
+                <!-- Sélecteur de langue -->
+                <div class="enc-lang-switcher">
+                    <a href="/fr">FR</a>
+                    <span>|</span>
+                    <a href="/en">EN</a>
+                    <span>|</span>
+                    <a href="/ar">AR</a>
+                </div>
+
+                <!-- Connexion -->
+                <a class="enc-login-btn" asp-controller="Account" asp-action="Login">
+                    Connexion
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Navigation domaines -->
+        <nav class="enc-domain-nav">
+            <div class="container-fluid">
+                <a class="enc-domain-link sciences" asp-controller="Domain" asp-action="Index" asp-route-slug="sciences">
+                    Sciences
+                </a>
+                <a class="enc-domain-link histoire" asp-controller="Domain" asp-action="Index" asp-route-slug="histoire">
+                    Histoire
+                </a>
+                <a class="enc-domain-link nature" asp-controller="Domain" asp-action="Index" asp-route-slug="nature">
+                    Nature
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ── CONTENU PRINCIPAL ── -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- ── FOOTER ── -->
+    <footer class="enc-footer">
+        <div class="container">
+            <div class="enc-footer-grid">
+                <div>
+                    <div class="enc-footer-logo">Encyclopædia</div>
+                    <p class="enc-footer-desc">
+                        Une encyclopédie de référence couvrant les Sciences, l'Histoire et la Nature.
+                    </p>
+                </div>
+                <div>
+                    <div class="enc-footer-title">Domaines</div>
+                    <ul class="enc-footer-links">
+                        <li><a asp-controller="Domain" asp-action="Index" asp-route-slug="sciences">Sciences</a></li>
+                        <li><a asp-controller="Domain" asp-action="Index" asp-route-slug="histoire">Histoire</a></li>
+                        <li><a asp-controller="Domain" asp-action="Index" asp-route-slug="nature">Nature</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="enc-footer-title">À propos</div>
+                    <ul class="enc-footer-links">
+                        <li><a href="#">À propos de nous</a></li>
+                        <li><a href="#">Contribuer</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="enc-footer-bottom">
+                &copy; 2026 Encyclopædia — Tous droits réservés
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
