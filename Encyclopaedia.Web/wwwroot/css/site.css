@@ -464,3 +464,110 @@ a {
         opacity: 0.6;
         color: var(--text);
     }
+/* ── LOGIN ── */
+.login-wrapper {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--cream);
+}
+
+.login-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+}
+
+.login-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.login-field {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+    .login-field label {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    .login-field input {
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 0.7rem 1rem;
+        font-size: 0.95rem;
+        font-family: var(--font-sans);
+        outline: none;
+        transition: border-color 0.2s;
+        color: var(--text);
+    }
+
+        .login-field input:focus {
+            border-color: var(--text);
+        }
+
+.login-remember {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.login-btn {
+    width: 100%;
+    background: var(--text);
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+    .login-btn:hover {
+        opacity: 0.85;
+    }
+
+.login-error {
+    background: #fff0f0;
+    border: 1px solid #ffcccc;
+    border-radius: 7px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: #c00;
+    margin-bottom: 1.25rem;
+}
+
+.field-error {
+    font-size: 0.78rem;
+    color: #c00;
+}

@@ -1,0 +1,44 @@
+﻿@model Encyclopaedia.Web.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+<div class="login-wrapper">
+    <div class="login-card">
+
+        <div class="login-header">
+            <div class="login-logo">Encyclopædia</div>
+            <p class="login-subtitle">Accès administration</p>
+        </div>
+
+        <form asp-action="Login" method="post">
+
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div asp-validation-summary="All" class="login-error"></div>
+            }
+
+            <div class="login-field">
+                <label asp-for="Email">Email</label>
+                <input asp-for="Email" type="email" placeholder="votre@email.com" />
+                <span asp-validation-for="Email" class="field-error"></span>
+            </div>
+
+            <div class="login-field">
+                <label asp-for="Password">Mot de passe</label>
+                <input asp-for="Password" type="password" placeholder="••••••••" />
+                <span asp-validation-for="Password" class="field-error"></span>
+            </div>
+
+            <div class="login-remember">
+                <input asp-for="RememberMe" type="checkbox" />
+                <label asp-for="RememberMe">Se souvenir de moi</label>
+            </div>
+
+            <button type="submit" class="login-btn">Se connecter</button>
+        </form>
+
+    </div>
+</div>

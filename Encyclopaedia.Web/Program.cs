@@ -1,4 +1,5 @@
 ﻿using Encyclopaedia.Core.Entities;
+using Encyclopaedia.Core.Enums;
 using Encyclopaedia.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -44,5 +45,31 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// ── Créer l'admin par défaut ──
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var adminEmail = "admin@encyclopaedia.com";
+    var adminExists = await userManager.FindByEmailAsync(adminEmail);
+
+    // si l'administrateur n'existe pas, on le crée avec un mot de passe par défaut. Il est recommandé de changer
+    // ce mot de passe après la première connexion pour des raisons de sécurité.
+    if (adminExists == null)
+    {
+        var admin = new ApplicationUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            DisplayName = "Administrateur",
+            Role = UserRole.Admin,
+            IsActive = true
+        };
+
+        await userManager.CreateAsync(admin, "Admin@12345");
+    }
+}
+
+app.Run();
 
 app.Run();
