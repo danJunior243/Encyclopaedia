@@ -70,6 +70,10 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.MapControllerRoute(
+    name: "admin",
+    pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
+
 app.Run();
 
 app.Run();

@@ -1,0 +1,62 @@
+﻿@model Encyclopaedia.Web.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-wrapper">
+
+    <!-- ── TITRE ── -->
+    <div class="admin-header">
+        <h1 class="admin-title">Dashboard</h1>
+        <p class="admin-subtitle">Vue d'ensemble de l'encyclopédie</p>
+    </div>
+
+    <!-- ── STATISTIQUES ── -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">@Model.TotalArticles</div>
+            <div class="stat-label">Total articles</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">@(Model.ArticlesByStatus.ContainsKey(Encyclopaedia.Core.Enums.ArticleStatus.Published) ? Model.ArticlesByStatus[Encyclopaedia.Core.Enums.ArticleStatus.Published] : 0)</div>
+            <div class="stat-label">Publiés</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">@(Model.ArticlesByStatus.ContainsKey(Encyclopaedia.Core.Enums.ArticleStatus.Draft) ? Model.ArticlesByStatus[Encyclopaedia.Core.Enums.ArticleStatus.Draft] : 0)</div>
+            <div class="stat-label">Brouillons</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">@(Model.ArticlesByStatus.ContainsKey(Encyclopaedia.Core.Enums.ArticleStatus.Review) ? Model.ArticlesByStatus[Encyclopaedia.Core.Enums.ArticleStatus.Review] : 0)</div>
+            <div class="stat-label">En révision</div>
+        </div>
+    </div>
+
+    <!-- ── ARTICLES RÉCEMMENT MIS À JOUR ── -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">Récemment mis à jour</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Catégorie</th>
+                    <th>Statut</th>
+                    <th>Mis à jour</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var article in Model.RecentlyUpdated)
+                {
+                    <tr>
+                        <td>@article.ArticleId</td>
+                        <td>@article.Category?.Slug</td>
+                        <td>@article.Statut</td>
+                        <td>@article.LastUpdatedAt.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

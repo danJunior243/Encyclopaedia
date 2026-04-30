@@ -39,7 +39,7 @@ namespace Encyclopaedia.Web.Controllers
 
             // Si la connexion est réussie, on redirige vers la page d'accueil.
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Dashboard", new { controller = "Dashboard" });
 
             ModelState.AddModelError("", "Email ou mot de passe incorrect.");
             return View(model);
