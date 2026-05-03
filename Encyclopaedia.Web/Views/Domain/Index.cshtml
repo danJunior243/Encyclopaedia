@@ -1,0 +1,68 @@
+﻿@model List<Encyclopaedia.Core.Entities.Domain>
+
+@{
+    ViewData["Title"] = "Gestion des domaines";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-wrapper">
+
+    <!-- ── TITRE ── -->
+    <div class="admin-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h1 class="admin-title">Domaines</h1>
+                <p class="admin-subtitle">@Model.Count domaine(s) au total</p>
+            </div>
+            <a class="btn-admin-add" asp-controller="AdminDomain" asp-action="Create">
+                + Nouveau domaine
+            </a>
+        </div>
+    </div>
+
+    <!-- ── TABLE ── -->
+    <div class="admin-section">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Slug</th>
+                    <th>Nom (FR)</th>
+                    <th>Nom (EN)</th>
+                    <th>Nom (AR)</th>
+                    <th>Ordre</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var domain in Model)
+                    {
+                        <tr>
+                            <td>@domain.DomainId</td>
+                            <td>@domain.Slug</td>
+                            <td>@domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name</td>
+                            <td>@domain.Translations.FirstOrDefault(t => t.LanguageId == 2)?.Name</td>
+                            <td>@domain.Translations.FirstOrDefault(t => t.LanguageId == 3)?.Name</td>
+                            <td>@domain.SortOrder</td>
+                            <td>
+                                <a asp-controller="Domain" asp-action="Edit" asp-route-id="@domain.DomainId">✏️</a>
+                                <a asp-controller="Domain" asp-action="Delete" asp-route-id="@domain.DomainId">🗑️</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" style="text-align:center; color:var(--text-dim); padding:2rem;">
+                            Aucun domaine pour l'instant
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

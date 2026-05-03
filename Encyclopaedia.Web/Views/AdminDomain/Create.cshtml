@@ -1,0 +1,59 @@
+﻿@model Encyclopaedia.Web.Models.DomainViewModel
+
+@{
+    ViewData["Title"] = "Nouveau domaine";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-wrapper">
+
+    <!-- ── TITRE ── -->
+    <div class="admin-header">
+        <h1 class="admin-title">Nouveau domaine</h1>
+        <p class="admin-subtitle">Créer un nouveau domaine</p>
+    </div>
+
+    <form asp-controller="AdminDomain" asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="login-error"></div>
+
+        <div class="admin-section">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Slug">Slug (URL)</label>
+                    <input asp-for="Slug" type="text" placeholder="ex: sciences" />
+                    <span asp-validation-for="Slug" class="field-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SortOrder">Ordre d'affichage</label>
+                    <input asp-for="SortOrder" type="number" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="NameFr">Nom en Français</label>
+                    <input asp-for="NameFr" type="text" placeholder="ex: Sciences" />
+                    <span asp-validation-for="NameFr" class="field-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NameEn">Nom en Anglais</label>
+                    <input asp-for="NameEn" type="text" placeholder="ex: Science" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NameAr">Nom en Arabe</label>
+                <input asp-for="NameAr" type="text" placeholder="ex: علوم" />
+            </div>
+
+        </div>
+
+        <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1rem;">
+            <a asp-controller="AdminDomain" asp-action="Index" class="btn-admin-cancel">Annuler</a>
+            <button type="submit" class="btn-admin-add">Enregistrer</button>
+        </div>
+
+    </form>
+
+</div>

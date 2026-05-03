@@ -13,5 +13,6 @@ namespace Encyclopaedia.Core.Entities
         // ce qui facilite la création d'URL propres et lisibles pour les pages associées à chaque domaine.
         public string Slug { get; set; } = string.Empty;
         public int SortOrder { get; set; } = 0;
+        public ICollection<DomainTranslation> Translations { get; set; } = new List<DomainTranslation>();
     }
 }

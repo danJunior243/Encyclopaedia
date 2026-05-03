@@ -17,6 +17,7 @@ namespace Encyclopaedia.Core.Entities
         public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
         public DateTime?PublishAt { get; set; }
         public Category Category { get; set; } = null!;
+        public ICollection<ArticleTranslation> Translations { get; set; } = new List<ArticleTranslation>();
 
         public long ViewCount { get; set; } = 0;
 

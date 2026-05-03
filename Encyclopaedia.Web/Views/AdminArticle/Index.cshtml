@@ -1,0 +1,94 @@
+﻿@model Encyclopaedia.Web.Models.ArticleAdminListViewModel
+
+@{
+    ViewData["Title"] = "Gestion des articles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-wrapper">
+
+    <!-- ── TITRE ── -->
+    <div class="admin-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h1 class="admin-title">Articles</h1>
+                <p class="admin-subtitle">@Model.TotalArticles article(s) au total</p>
+            </div>
+            <a class="btn-admin-add" asp-controller="AdminArticle" asp-action="Create">
+                + Nouvel article
+            </a>
+        </div>
+    </div>
+
+    <!-- ── FILTRES ── -->
+    <div class="admin-filters">
+        <a class="filter-btn @(Model.FiltreStatut == null ? "active" : "")"
+           asp-controller="AdminArticle" asp-action="Index">
+            Tous
+        </a>
+        <a class="filter-btn @(Model.FiltreStatut == "Draft" ? "active" : "")"
+           asp-controller="AdminArticle" asp-action="Index" asp-route-filtreStatut="Draft">
+            Brouillons
+        </a>
+        <a class="filter-btn @(Model.FiltreStatut == "Review" ? "active" : "")"
+           asp-controller="AdminArticle" asp-action="Index" asp-route-filtreStatut="Review">
+            En révision
+        </a>
+        <a class="filter-btn @(Model.FiltreStatut == "Published" ? "active" : "")"
+           asp-controller="AdminArticle" asp-action="Index" asp-route-filtreStatut="Published">
+            Publiés
+        </a>
+    </div>
+
+    <!-- ── TABLE ── -->
+    <div class="admin-section">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Domaine</th>
+                    <th>Catégorie</th>
+                    <th>Statut</th>
+                    <th>Mis à jour</th>
+                    <th>Vues</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Articles.Any())
+                {
+                    @foreach (var article in Model.Articles)
+                    {
+                        <tr>
+                            <td>@article.Id</td>
+                            <td>@article.Title</td>
+                            <td>@article.Domain</td>
+                            <td>@article.Category</td>
+                            <td>
+                                <span class="status-badge status-@article.Status.ToString().ToLower()">
+                                    @article.Status
+                                </span>
+                            </td>
+                            <td>@article.LastUpdatedAt.ToString("dd/MM/yyyy")</td>
+                            <td>@article.ViewCount</td>
+                            <td>
+                                <a asp-controller="AdminArticle" asp-action="Edit" asp-route-id="@article.Id">✏️</a>
+                                <a asp-controller="AdminArticle" asp-action="Delete" asp-route-id="@article.Id">🗑️</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" style="text-align:center; color:var(--text-dim); padding:2rem;">
+                            Aucun article pour l'instant
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>

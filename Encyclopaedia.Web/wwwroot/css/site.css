@@ -749,3 +749,134 @@ a {
 .admin-content {
     overflow-y: auto;
 }
+
+/* ── FILTRES ── */
+.admin-filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    background: white;
+    transition: all 0.2s;
+}
+
+    .filter-btn:hover {
+        border-color: var(--text);
+        color: var(--text);
+    }
+
+    .filter-btn.active {
+        background: var(--text);
+        color: white;
+        border-color: var(--text);
+    }
+
+/* ── STATUT BADGES ── */
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-draft {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.status-review {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-published {
+    background: #d1e7dd;
+    color: #0a3622;
+}
+
+.status-archived {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* ── BOUTON AJOUTER ── */
+.btn-admin-add {
+    background: var(--text);
+    color: white;
+    padding: 0.6rem 1.25rem;
+    border-radius: 7px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+    .btn-admin-add:hover {
+        opacity: 0.85;
+        color: white;
+    }
+
+/* ── FORMULAIRE ADMIN ── */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+}
+
+    .form-group label {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+        font-family: var(--font-sans);
+        outline: none;
+        transition: border-color 0.2s;
+        color: var(--text);
+        background: white;
+    }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--text);
+        }
+
+    .form-group textarea {
+        resize: vertical;
+    }
+
+.btn-admin-cancel {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 0.6rem 1.25rem;
+    border-radius: 7px;
+    font-size: 0.88rem;
+    transition: all 0.2s;
+}
+
+    .btn-admin-cancel:hover {
+        border-color: var(--text);
+        color: var(--text);
+    }
