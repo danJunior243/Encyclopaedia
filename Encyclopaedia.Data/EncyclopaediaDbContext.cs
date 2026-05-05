@@ -40,9 +40,15 @@ namespace Encyclopaedia.Data
             modelBuilder.Entity<DomainTranslation>()
                 .HasKey(x => new { x.DomainId, x.LanguageId });
 
+
             // Clé composite pour CategoryTranslation
             modelBuilder.Entity<CategoryTranslation>()
                 .HasKey(x => new { x.CategoryId, x.LanguageId });
+
+            modelBuilder.Entity<CategoryTranslation>()
+                .HasOne(x => x.Category)
+                .WithMany(c => c.Translations)
+                .HasForeignKey(x => x.CategoryId);
 
             // Clé composite pour TagTranslation
             modelBuilder.Entity<TagTranslation>()

@@ -1,0 +1,68 @@
+﻿@model List<Encyclopaedia.Core.Entities.Category>
+
+@{
+    ViewData["Title"] = "Gestion des catégories";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-wrapper">
+
+    <!-- ── TITRE ── -->
+    <div class="admin-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h1 class="admin-title">Catégories</h1>
+                <p class="admin-subtitle">@Model.Count catégorie(s) au total</p>
+            </div>
+            <a class="btn-admin-add" asp-controller="AdminCategory" asp-action="Create">
+                + Nouvelle catégorie
+            </a>
+        </div>
+    </div>
+
+    <!-- ── TABLE ── -->
+    <div class="admin-section">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Slug</th>
+                    <th>Domaine</th>
+                    <th>Nom (FR)</th>
+                    <th>Parent</th>
+                    <th>Ordre</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var category in Model)
+                    {
+                        <tr>
+                            <td>@category.CategoryId</td>
+                            <td>@category.Slug</td>
+                            <td>@category.Domain?.Slug</td>
+                            <td>@category.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name</td>
+                            <td>@(category.ParentId.HasValue? category.ParentId.ToString() : "—")</td>
+                            <td>@category.SortOrder</td>
+                            <td>
+                                <a asp-controller="AdminCategory" asp-action="Edit" asp-route-id="@category.CategoryId">✏️</a>
+                                <a asp-controller="AdminCategory" asp-action="Delete" asp-route-id="@category.CategoryId">🗑️</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" style="text-align:center; color:var(--text-dim); padding:2rem;">
+                            Aucune catégorie pour l'instant
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
