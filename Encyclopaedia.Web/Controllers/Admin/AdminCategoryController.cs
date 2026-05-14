@@ -53,7 +53,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                         Text = c.Slug
                     }).ToListAsync()
             };
-            return View("~/Views/AdminCategory/Create.cshtml", new CategoryViewModel());
+            return View("~/Views/AdminCategory/Create.cshtml", model);
         }
         [HttpPost]
 
