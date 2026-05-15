@@ -880,3 +880,25 @@ a {
         border-color: var(--text);
         color: var(--text);
     }
+
+
+/* ── IMPORT ── */
+.import-success {
+    background: #d1e7dd;
+    border: 1px solid #a3cfbb;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    color: #0a3622;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.code-block {
+    background: #1a1a1a;
+    color: #e8e3d8;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+}

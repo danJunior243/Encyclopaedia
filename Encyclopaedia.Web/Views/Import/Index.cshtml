@@ -1,0 +1,73 @@
+﻿@model Encyclopaedia.Web.Models.ImportViewModel
+
+@{
+    ViewData["Title"] = "Importer des données";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-wrapper">
+
+    <!-- ── TITRE ── -->
+    <div class="admin-header">
+        <h1 class="admin-title">Importer des données</h1>
+        <p class="admin-subtitle">Importez vos catégories via un fichier CSV</p>
+    </div>
+
+    <!-- ── RÉSULTAT ── -->
+    @if (Model.Success)
+    {
+        <div class="import-success">
+            ✅ @Model.ImportedCount élément(s) importé(s) avec succès !
+        </div>
+    }
+
+    @if (Model.Errors.Any())
+    {
+        <div class="login-error">
+            @foreach (var error in Model.Errors)
+            {
+                <p>❌ @error</p>
+            }
+        </div>
+    }
+
+    <!-- ── FORMULAIRE ── -->
+    <div class="admin-section">
+        <form asp-action="Import" method="post" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>Type de données</label>
+                <select name="Type" class="form-control">
+                    <option value="categories">Catégories</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Fichier CSV</label>
+                <input type="file" name="File" accept=".csv" />
+                <span class="field-error">@Html.ValidationMessage("File")</span>
+            </div>
+
+            <button type="submit" class="btn-admin-add">Importer</button>
+
+        </form>
+    </div>
+
+    <!-- ── FORMAT ATTENDU ── -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">Format CSV attendu</h2>
+        <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:1rem;">
+            Le fichier CSV doit avoir les colonnes suivantes :
+        </p>
+        <div class="code-block">
+            Slug,DomainId,ParentId,SortOrder,NameFr,NameEn,NameAr<br>
+            biologie,1,0,1,Biologie,Biology,علم الأحياء<br>
+            physique,1,0,2,Physique,Physics,الفيزياء<br>
+            genetique,1,1,1,Génétique,Genetics,علم الوراثة
+        </div>
+        <p style="font-size:0.8rem; color:var(--text-dim); margin-top:0.75rem;">
+            Note : ParentId = 0 si c'est une catégorie racine
+        </p>
+    </div>
+
+</div>
