@@ -2,6 +2,7 @@ using Encyclopaedia.Core.Enums;
 using Encyclopaedia.Data;
 using Encyclopaedia.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Encyclopaedia.Web.Controllers
@@ -24,19 +25,24 @@ namespace Encyclopaedia.Web.Controllers
             // les 5 articles les plus populaires (en fonction du nombre de vues) pour les afficher sur la page d'accueil.
             var viewModel = new HomeViewModel
             {
-                RecentArticles = _context.Articles
-               .Where(a => a.Statut == ArticleStatus.Published)
-               .OrderByDescending(a => a.PublishAt)
-               .Take(5)
-               .ToList(),
+          RecentArticles = _context.Articles
+            .Include(a => a.Category)
+            .ThenInclude(c => c.Domain)
+             .Include(a => a.Translations)
+            .Where(a => a.Statut == ArticleStatus.Published)
+            .OrderByDescending(a => a.PublishAt)
+            .Take(5)
+            .ToList(),
 
-                PopularArticles = _context.Articles
-               .Where(a => a.Statut == ArticleStatus.Published)
-               .OrderByDescending(a => a.ViewCount)
-               .Take(5)
-               .ToList()
+           PopularArticles = _context.Articles
+            .Include(a => a.Category)
+            .ThenInclude(c => c.Domain)
+            .Include(a => a.Translations)
+            .Where(a => a.Statut == ArticleStatus.Published)
+            .OrderByDescending(a => a.ViewCount)
+            .Take(5)
+            .ToList()
             };
-
 
             //retourne la vue associée à cette action, qui est généralement située dans Views/Home/Index.cshtml.
             return View(viewModel);

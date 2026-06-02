@@ -4,6 +4,7 @@ using Encyclopaedia.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Encyclopaedia.Data.Migrations
 {
     [DbContext(typeof(EncyclopaediaDbContext))]
-    partial class EncyclopaediaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260602041747_AddLanguagesSeed")]
+    partial class AddLanguagesSeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

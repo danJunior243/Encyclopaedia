@@ -67,13 +67,32 @@
                             <td>@article.Category</td>
                             <td>
                                 <span class="status-badge status-@article.Status.ToString().ToLower()">
-                                    @article.Status
+                                    @switch (article.Status)
+                                    {
+                                        case Encyclopaedia.Core.Enums.ArticleStatus.Draft:
+                                            @:Brouillon
+                                            break;
+                                        case Encyclopaedia.Core.Enums.ArticleStatus.Review:
+                                            @:En révision
+                                            break;
+                                        case Encyclopaedia.Core.Enums.ArticleStatus.Published:
+                                            @:Publié
+                                            break;
+                                        case Encyclopaedia.Core.Enums.ArticleStatus.Archived:
+                                            @:Archivé
+                                            break;
+                                    }
                                 </span>
                             </td>
                             <td>@article.LastUpdatedAt.ToString("dd/MM/yyyy")</td>
                             <td>@article.ViewCount</td>
                             <td>
                                 <a asp-controller="AdminArticle" asp-action="Edit" asp-route-id="@article.Id">✏️</a>
+                                @if (article.Status == Encyclopaedia.Core.Enums.ArticleStatus.Draft ||
+                                                        article.Status == Encyclopaedia.Core.Enums.ArticleStatus.Review)
+                                {
+                                    <a asp-controller="AdminArticle" asp-action="Publish" asp-route-id="@article.Id">✅</a>
+                                }
                                 <a asp-controller="AdminArticle" asp-action="Delete" asp-route-id="@article.Id">🗑️</a>
                             </td>
                         </tr>

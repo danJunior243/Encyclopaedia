@@ -14,8 +14,10 @@
     </div>
 
     <form asp-action="Create" method="post">
-        <div asp-validation-summary="All" class="login-error"></div>
-
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="All" class="login-error"></div>
+        }
         <div class="admin-section">
             <div class="form-row">
                 <div class="form-group">

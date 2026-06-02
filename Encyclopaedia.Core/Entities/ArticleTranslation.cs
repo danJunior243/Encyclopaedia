@@ -17,5 +17,8 @@ namespace Encyclopaedia.Core.Entities
 
         public string Summary { get; set; } = string.Empty;
         public string Slug { get; set; } = string.Empty;
+
+        public Article Article { get; set; } = null!;
+        public Language Language { get; set; } = null!;
     }
 }

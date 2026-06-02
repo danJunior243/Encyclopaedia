@@ -121,6 +121,22 @@ namespace Encyclopaedia.Web.Controllers.Admin
             return RedirectToAction("Index");
         }
 
+        // ── Publier un article ──
+        public async Task<IActionResult> Publish(int id)
+        {
+            var article = await _context.Articles.FindAsync(id);
+            if (article == null)
+                return NotFound();
+
+            article.Statut = Encyclopaedia.Core.Enums.ArticleStatus.Published;
+            article.PublishAt = DateTime.UtcNow;
+            article.LastUpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
 
 
     }

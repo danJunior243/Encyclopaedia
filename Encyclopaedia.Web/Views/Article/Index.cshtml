@@ -1,0 +1,71 @@
+﻿@model Encyclopaedia.Core.Entities.ArticleTranslation
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="article-page">
+
+    <!-- ── BREADCRUMB ── -->
+    <div class="breadcrumb">
+        <a asp-controller="Home" asp-action="Index">Accueil</a>
+        <span>›</span>
+        <a asp-controller="Domain" asp-action="Index" asp-route-slug="@Model.Article.Category.Domain.Slug">
+            @Model.Article.Category.Domain.Slug
+        </a>
+        <span>›</span>
+        <a asp-controller="Category" asp-action="Index" asp-route-slug="@Model.Article.Category.Slug">
+            @Model.Article.Category.Slug
+        </a>
+        <span>›</span>
+        <span>@Model.Title</span>
+    </div>
+
+    <!-- ── CONTENU ── -->
+    <div class="article-container">
+
+        <!-- ── ARTICLE PRINCIPAL ── -->
+        <article class="article-main">
+            <div class="article-meta">
+                <span class="article-domain">@Model.Article.Category.Domain.Slug</span>
+                <span class="article-category">@Model.Article.Category.Slug</span>
+                <span class="article-views">👁 @Model.Article.ViewCount vues</span>
+            </div>
+
+            <h1 class="article-title">@Model.Title</h1>
+
+            <div class="article-summary">
+                @Model.Summary
+            </div>
+
+            <div class="article-content">
+                @Html.Raw(Model.Content)
+            </div>
+        </article>
+
+        <!-- ── SIDEBAR ── -->
+        <aside class="article-sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-card-title">Informations</div>
+                <div class="sidebar-info">
+                    <span class="sidebar-info-label">Domaine</span>
+                    <span class="sidebar-info-value">@Model.Article.Category.Domain.Slug</span>
+                </div>
+                <div class="sidebar-info">
+                    <span class="sidebar-info-label">Catégorie</span>
+                    <span class="sidebar-info-value">@Model.Article.Category.Slug</span>
+                </div>
+                <div class="sidebar-info">
+                    <span class="sidebar-info-label">Langue</span>
+                    <span class="sidebar-info-value">@Model.Language.Name</span>
+                </div>
+                <div class="sidebar-info">
+                    <span class="sidebar-info-label">Statut</span>
+                    <span class="sidebar-info-value">@Model.Article.Statut</span>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+
+</div>

@@ -52,7 +52,7 @@
                     var first = Model.RecentArticles.First();
                     <div class="article-card-big">
                         <div class="article-card-domain sciences-text">@first.Category.Domain.Slug</div>
-                        <h3 class="article-card-title">@first.Category.Slug</h3>
+                        <h3 class="article-card-title">@first.Translations.FirstOrDefault()?.Title</h3>
                         <a href="#" class="article-card-link">Lire l'article →</a>
                     </div>
                 }
@@ -67,8 +67,8 @@
                 @foreach (var article in Model.PopularArticles.Take(3))
                 {
                     <div class="article-card-small">
-                        <div class="article-card-domain sciences-text">@article.Category.Slug</div>
-                        <h3 class="article-card-title-sm">@article.Category.Slug</h3>
+                        <div class="article-card-domain sciences-text">@article.Category.Domain.Slug</div>
+                        <h3 class="article-card-title-sm">@article.Translations.FirstOrDefault()?.Title</h3>
                         <a href="#" class="article-card-link">Lire →</a>
                     </div>
                 }

@@ -53,6 +53,18 @@ namespace Encyclopaedia.Data
             // Clé composite pour TagTranslation
             modelBuilder.Entity<TagTranslation>()
                 .HasKey(x => new { x.TagId, x.LanguageId });
+
+
+            // Seed data — Langues
+
+            // On utilise la méthode HasData pour pré-remplir la table des langues avec des données initiales. Cela permet d'avoir des langues disponibles dès le départ,
+            // ce qui est essentiel pour une application multilingue.
+            modelBuilder.Entity<Language>().HasData(
+                new Language { LanguageId = 1, Code = "fr", Name = "Français", IsDefault = true, IsActive = true },
+                new Language { LanguageId = 2, Code = "en", Name = "English", IsDefault = false, IsActive = true },
+                new Language { LanguageId = 3, Code = "ar", Name = "العربية", IsDefault = false, IsActive = true }
+            );
+
         }
     }
        
