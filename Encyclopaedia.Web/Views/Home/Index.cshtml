@@ -51,9 +51,11 @@
                 {
                     var first = Model.RecentArticles.First();
                     <div class="article-card-big">
-                        <div class="article-card-domain sciences-text">@first.Category.Domain.Slug</div>
+                        <div class="article-card-domain sciences-text">@first.Category.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name</div>
                         <h3 class="article-card-title">@first.Translations.FirstOrDefault()?.Title</h3>
-                        <a href="#" class="article-card-link">Lire l'article →</a>
+                        <a asp-controller="Article" asp-action="Index"
+                           asp-route-slug="@first.Translations.FirstOrDefault()?.Slug"
+                           class="article-card-link">Lire l'article →</a>
                     </div>
                 }
                 else
@@ -67,9 +69,12 @@
                 @foreach (var article in Model.PopularArticles.Take(3))
                 {
                     <div class="article-card-small">
-                        <div class="article-card-domain sciences-text">@article.Category.Domain.Slug</div>
+                        <div class="article-card-domain sciences-text">@article.Category.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name</div>
                         <h3 class="article-card-title-sm">@article.Translations.FirstOrDefault()?.Title</h3>
-                        <a href="#" class="article-card-link">Lire →</a>
+                        <a asp-controller="Article" asp-action="Index"
+                           asp-route-slug="@article.Translations.FirstOrDefault()?.Slug"
+                           class="article-card-link
+">Lire →</a>
                     </div>
                 }
             </div>

@@ -1,0 +1,59 @@
+﻿@model List<Encyclopaedia.Core.Entities.ArticleTranslation>
+
+@{
+    ViewData["Title"] = "Recherche — " + ViewData["Query"];
+    string query = ViewData["Query"]?.ToString() ?? "";
+}
+
+<div class="article-page">
+
+    <!-- ── TITRE ── -->
+    <div class="search-header">
+        <h1 class="search-title">
+            Résultats pour <span class="search-query">"@query"</span>
+        </h1>
+        <p class="search-count">@Model.Count résultat(s) trouvé(s)</p>
+    </div>
+
+    <!-- ── RÉSULTATS ── -->
+    @if (Model.Any())
+    {
+        <div class="search-results">
+            @foreach (var result in Model)
+            {
+                <div class="search-result-card">
+                    <div class="search-result-meta">
+                        <span class="article-domain">
+                            @{
+                                var domainName = result.Article.Category.Domain.Translations
+                                .FirstOrDefault(t => t.LanguageId == 1)?.Name ?? result.Article.Category.Domain.Slug;
+                            }
+                            @domainName
+                        </span>
+                        <span class="article-category">@result.Article.Category.Slug</span>
+                    </div>
+                    <h2 class="search-result-title">
+                        <a asp-controller="Article" asp-action="Index"
+                           asp-route-slug="@result.Slug">
+                            @result.Title
+                        </a>
+                    </h2>
+                    <p class="search-result-summary">@result.Summary</p>
+                    <a class="search-result-link" asp-controller="Article"
+                       asp-action="Index" asp-route-slug="@result.Slug">
+                        Lire l'article →
+                    </a>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="search-empty">
+            <div class="search-empty-icon">🔍</div>
+            <p>Aucun résultat pour <strong>"@query"</strong></p>
+            <p class="search-empty-hint">Essayez avec d'autres mots-clés</p>
+        </div>
+    }
+
+</div>

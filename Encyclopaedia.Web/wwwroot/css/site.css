@@ -1048,3 +1048,99 @@ a {
     font-weight: 500;
     color: var(--text);
 }
+/* ── RECHERCHE ── */
+.search-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.search-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.search-query {
+    color: var(--sciences);
+}
+
+.search-count {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+/* ── RÉSULTATS ── */
+.search-results {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.search-result-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+}
+
+    .search-result-card:hover {
+        border-color: var(--sciences);
+    }
+
+.search-result-meta {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.search-result-title {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+    .search-result-title a {
+        color: var(--text);
+        transition: color 0.2s;
+    }
+
+        .search-result-title a:hover {
+            color: var(--sciences);
+        }
+
+.search-result-summary {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.search-result-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--text);
+    padding-bottom: 1px;
+}
+
+/* ── VIDE ── */
+.search-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-dim);
+}
+
+.search-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.search-empty-hint {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}

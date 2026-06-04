@@ -19,30 +19,32 @@ namespace Encyclopaedia.Web.Controllers
         }
 
         // Cette action retourne la vue principale de l'application, généralement la page d'accueil.
-        public IActionResult Index()
+        public async Task <IActionResult> Index()
         {
             // ici on recupere les 5 articles les plus récents et
             // les 5 articles les plus populaires (en fonction du nombre de vues) pour les afficher sur la page d'accueil.
             var viewModel = new HomeViewModel
             {
-          RecentArticles = _context.Articles
-            .Include(a => a.Category)
-            .ThenInclude(c => c.Domain)
-             .Include(a => a.Translations)
-            .Where(a => a.Statut == ArticleStatus.Published)
-            .OrderByDescending(a => a.PublishAt)
-            .Take(5)
-            .ToList(),
+              RecentArticles = await _context.Articles
+                .Include(a => a.Category)
+                    .ThenInclude(c => c.Domain)
+                         .ThenInclude(d => d.Translations)
+                .Include(a => a.Translations)
+                .Where(a => a.Statut == ArticleStatus.Published)
+                .OrderByDescending(a => a.PublishAt)
+                .Take(5)
+                .ToListAsync(),
 
-           PopularArticles = _context.Articles
-            .Include(a => a.Category)
-            .ThenInclude(c => c.Domain)
-            .Include(a => a.Translations)
-            .Where(a => a.Statut == ArticleStatus.Published)
-            .OrderByDescending(a => a.ViewCount)
-            .Take(5)
-            .ToList()
-            };
+               PopularArticles = await _context.Articles
+                .Include(a => a.Category)
+                   .ThenInclude(c => c.Domain)
+                       .ThenInclude(d => d.Translations)
+                .Include(a => a.Translations)
+                .Where(a => a.Statut == ArticleStatus.Published)
+                .OrderByDescending(a => a.ViewCount)
+                .Take(5)
+                .ToListAsync()
+                };
 
             //retourne la vue associée à cette action, qui est généralement située dans Views/Home/Index.cshtml.
             return View(viewModel);

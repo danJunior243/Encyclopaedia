@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Category\" />
-    <Folder Include="Views\Search\" />
   </ItemGroup>
 
 </Project>
