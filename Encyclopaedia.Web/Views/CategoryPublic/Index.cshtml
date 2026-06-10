@@ -1,0 +1,78 @@
+﻿@model Encyclopaedia.Core.Entities.Category
+
+@{
+    var catName = Model.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? Model.Slug;
+    var domainName = Model.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? Model.Domain.Slug;
+    ViewData["Title"] = catName;
+}
+
+<div class="article-page">
+
+    <!-- ── BREADCRUMB ── -->
+    <div class="breadcrumb">
+        <a asp-controller="Home" asp-action="Index">Accueil</a>
+        <span>›</span>
+        <a asp-controller="Domain" asp-action="Index" asp-route-slug="@Model.Domain.Slug">
+            @domainName
+        </a>
+        <span>›</span>
+        <span>@catName</span>
+    </div>
+
+    <!-- ── TITRE ── -->
+    <div class="domain-hero">
+        <h1 class="domain-title">@catName</h1>
+        <p class="domain-count">
+            @Model.Articles.Count(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published) article(s) publié(s)
+        </p>
+    </div>
+
+    <!-- ── ARTICLES ── -->
+    <div class="search-results">
+        @{
+            var publishedArticles = Model.Articles
+            .Where(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published)
+            .OrderByDescending(a => a.PublishAt)
+            .ToList();
+        }
+
+        @if (publishedArticles.Any())
+        {
+            @foreach (var article in publishedArticles)
+            {
+                var translation = article.Translations.FirstOrDefault();
+                if (translation != null)
+                {
+                    <div class="search-result-card">
+                        <div class="search-result-meta">
+                            <span class="article-domain">@domainName</span>
+                            <span class="article-category">@catName</span>
+                            <span style="margin-left:auto; font-size:0.8rem; color:var(--text-dim)">
+                                👁 @article.ViewCount vues
+                            </span>
+                        </div>
+                        <h2 class="search-result-title">
+                            <a asp-controller="Article" asp-action="Index"
+                               asp-route-slug="@translation.Slug">
+                                @translation.Title
+                            </a>
+                        </h2>
+                        <p class="search-result-summary">@translation.Summary</p>
+                        <a class="search-result-link" asp-controller="Article"
+                           asp-action="Index" asp-route-slug="@translation.Slug">
+                            Lire l'article →
+                        </a>
+                    </div>
+                }
+            }
+        }
+        else
+        {
+            <div class="search-empty">
+                <div class="search-empty-icon">📄</div>
+                <p>Aucun article publié dans cette catégorie pour l'instant.</p>
+            </div>
+        }
+    </div>
+
+</div>

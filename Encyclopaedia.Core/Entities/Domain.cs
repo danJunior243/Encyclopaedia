@@ -14,5 +14,6 @@ namespace Encyclopaedia.Core.Entities
         public string Slug { get; set; } = string.Empty;
         public int SortOrder { get; set; } = 0;
         public ICollection<DomainTranslation> Translations { get; set; } = new List<DomainTranslation>();
+        public ICollection<Category> Categories { get; set; } = new List<Category>();
     }
 }

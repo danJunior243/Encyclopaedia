@@ -16,6 +16,7 @@ namespace Encyclopaedia.Core.Entities
         public int SortOrder { get; set; } = 0;
 
         public ICollection<CategoryTranslation> Translations { get; set; } = new List<CategoryTranslation>();
+        public ICollection<Article> Articles { get; set; } = new List<Article>();
 
     }
 }

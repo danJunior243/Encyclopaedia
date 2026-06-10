@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Slugify;
 
 namespace Encyclopaedia.Web.Controllers.Admin
 {
@@ -103,6 +104,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
             // On crée la traduction de l'article avec les données du formulaire
+             var slugHelper = new Slugify.SlugHelper();
 
             var translation = new Encyclopaedia.Core.Entities.ArticleTranslation
             {
@@ -111,7 +113,8 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 Title = model.Title,
                 Summary = model.Summary,
                 Content = model.Content,
-                Slug = model.Title.ToLower().Replace(" ", "-")
+               
+                Slug = slugHelper.GenerateSlug(model.Title)
             };
             // On ajoute la traduction à la base de données
 

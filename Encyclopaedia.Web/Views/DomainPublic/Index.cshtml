@@ -1,0 +1,68 @@
+﻿@model Encyclopaedia.Core.Entities.Domain
+
+@{
+    var domainName = Model.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? Model.Slug;
+    ViewData["Title"] = domainName;
+}
+
+<div class="article-page">
+
+    <!-- ── TITRE DU DOMAINE ── -->
+    <div class="domain-hero">
+        <h1 class="domain-title">@domainName</h1>
+        <p class="domain-count">@Model.Categories.Count catégorie(s)</p>
+    </div>
+
+    <!-- ── CATÉGORIES ── -->
+    <section style="margin-bottom: 3rem;">
+        <h2 class="section-title">Catégories</h2>
+        <div class="categories-grid">
+            @foreach (var category in Model.Categories.OrderBy(c => c.SortOrder))
+            {
+                var catName = category.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? category.Slug;
+                <a class="category-card" asp-controller="Category" asp-action="Index" asp-route-slug="@category.Slug">
+                    <div class="category-card-name">@catName</div>
+                    <div class="category-card-count">@category.Articles.Count article(s)</div>
+                </a>
+            }
+        </div>
+    </section>
+
+    <!-- ── ARTICLES ── -->
+    <section>
+        <h2 class="section-title">Articles récents</h2>
+        <div class="search-results">
+            @foreach (var category in Model.Categories)
+            {
+                @foreach (var article in category.Articles
+                            .Where(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published)
+                            .OrderByDescending(a => a.PublishAt)
+                            .Take(3))
+                {
+                    var translation = article.Translations.FirstOrDefault();
+                    if (translation != null)
+                    {
+                        <div class="search-result-card">
+                            <div class="search-result-meta">
+                                <span class="article-domain">@domainName</span>
+                                <span class="article-category">@category.Slug</span>
+                            </div>
+                            <h2 class="search-result-title">
+                                <a asp-controller="Article" asp-action="Index"
+                                   asp-route-slug="@translation.Slug">
+                                    @translation.Title
+                                </a>
+                            </h2>
+                            <p class="search-result-summary">@translation.Summary</p>
+                            <a class="search-result-link" asp-controller="Article"
+                               asp-action="Index" asp-route-slug="@translation.Slug">
+                                Lire l'article →
+                            </a>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </section>
+
+</div>

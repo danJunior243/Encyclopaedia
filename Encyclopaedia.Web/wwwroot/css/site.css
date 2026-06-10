@@ -1143,4 +1143,62 @@ a {
 .search-empty-hint {
     font-size: 0.85rem;
     margin-top: 0.5rem;
+
+
+}
+
+
+/* ── PAGE DOMAINE ── */
+.domain-hero {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.domain-title {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.domain-count {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+/* ── GRILLE CATÉGORIES ── */
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.category-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+    display: block;
+}
+
+    .category-card:hover {
+        border-color: var(--sciences);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+.category-card-name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+}
+
+.category-card-count {
+    font-size: 0.78rem;
+    color: var(--text-dim);
 }
