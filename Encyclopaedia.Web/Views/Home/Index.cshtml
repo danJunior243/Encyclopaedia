@@ -6,16 +6,33 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
+    <div class="hero-bg"></div>
     <div class="hero-content">
-        <h1 class="hero-title">La connaissance à portée de main</h1>
-        <p class="hero-subtitle">Des milliers d'articles sur les Sciences, l'Histoire et la Nature</p>
+        <div class="hero-badge">📚 Encyclopédie de référence</div>
+        <h1 class="hero-title">Explorez la connaissance<br><span class="hero-title-accent">sans limites</span></h1>
+        <p class="hero-subtitle">Des milliers d'articles sur les Sciences, l'Histoire et la Nature — rédigés avec rigueur et passion</p>
         <form class="hero-search" asp-controller="Search" asp-action="Index" method="get">
-            <input type="text" name="q" placeholder="Rechercher un article…" class="hero-search-input" />
+            <input type="text" name="q" placeholder="Rechercher un article, un concept, une découverte…" class="hero-search-input" />
             <button type="submit" class="hero-search-btn">Rechercher</button>
         </form>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-num">@ViewBag.TotalArticles</span>
+                <span class="hero-stat-label">Articles</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-num">3</span>
+                <span class="hero-stat-label">Domaines</span>
+            </div>
+            <div class="hero-stat-divider"></div>
+            <div class="hero-stat">
+                <span class="hero-stat-num">3</span>
+                <span class="hero-stat-label">Langues</span>
+            </div>
+        </div>
     </div>
 </section>
-
 <!-- ── DOMAINES ── -->
 <section class="domains-section">
     <div class="container">

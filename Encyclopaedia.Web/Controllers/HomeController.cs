@@ -44,8 +44,12 @@ namespace Encyclopaedia.Web.Controllers
                 .OrderByDescending(a => a.ViewCount)
                 .Take(5)
                 .ToListAsync()
-                };
+           
+            };
 
+            ViewBag.TotalArticles = await _context.Articles
+               .Where(a => a.Statut == ArticleStatus.Published)
+               .CountAsync();
             //retourne la vue associée à cette action, qui est généralement située dans Views/Home/Index.cshtml.
             return View(viewModel);
         }
