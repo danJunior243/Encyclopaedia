@@ -1098,7 +1098,9 @@ a {
 /* ── SIDEBAR ARTICLE ── */
 .article-sidebar {
     position: sticky;
-    top: 100px;
+    top: 80px;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
 }
 
 .sidebar-card {
@@ -1293,3 +1295,271 @@ a {
     font-size: 0.78rem;
     color: var(--text-dim);
 }
+
+/* ── SECTION HEADER ── */
+.section-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.section-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+}
+
+/* ── DOMAIN CARDS ── */
+.domain-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    border-radius: 12px;
+    padding: 1.75rem;
+    text-align: left;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+}
+
+    .domain-card.sciences {
+        background: linear-gradient(135deg, rgba(26,58,92,0.92) 0%, rgba(42,96,153,0.92) 100%), url('https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=600&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+    }
+
+    .domain-card.histoire {
+        background: linear-gradient(135deg, rgba(92,26,26,0.92) 0%, rgba(139,38,53,0.92) 100%), url('https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=600&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+    }
+
+    .domain-card.nature {
+        background: linear-gradient(135deg, rgba(26,61,43,0.92) 0%, rgba(45,106,79,0.92) 100%), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+    }
+
+    .domain-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+        color: white;
+    }
+
+.domain-card-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.domain-card-content {
+    flex: 1;
+}
+
+.domain-card-name {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: white;
+}
+
+.domain-card-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.domain-card-arrow {
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.5);
+    transition: transform 0.2s;
+}
+
+.domain-card:hover .domain-card-arrow {
+    transform: translateX(6px);
+    color: white;
+}
+
+/* ── ARTICLE CARD BIG ── */
+.article-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.article-card-big {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2.5rem;
+    height: 100%;
+    transition: border-color 0.2s;
+}
+
+    .article-card-big:hover {
+        border-color: var(--sciences);
+    }
+
+.article-card-excerpt {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+}
+
+/* ── ARTICLE CARD SMALL ── */
+.article-card-small {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.2s;
+}
+
+    .article-card-small:hover {
+        border-color: var(--sciences);
+    }
+/* ── LE SAVIEZ-VOUS ── */
+.did-you-know {
+    background: #0A0A0A;
+    color: white;
+    padding: 4rem 0;
+    margin-top: 4rem;
+}
+
+.dyk-inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.dyk-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+}
+
+.dyk-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.75rem;
+}
+
+.dyk-text {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 1.25rem;
+    font-style: italic;
+}
+
+.dyk-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+}
+
+    .dyk-link:hover {
+        color: white;
+    }
+
+/* ── ARTICLE DIVIDER ── */
+.article-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+}
+
+/* ── PARTAGER ── */
+.article-share {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.article-share-label {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    background: #f5f5f5;
+}
+
+    .share-btn:hover {
+        background: var(--text);
+        color: white;
+        border-color: var(--text);
+    }
+
+/* ── ARTICLES SIMILAIRES ── */
+.similar-article {
+    display: block;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+    color: var(--text);
+    transition: color 0.2s;
+    line-height: 1.4;
+}
+
+.similar-article:last-child {
+        border-bottom: none;
+    }
+
+.similar-article:hover {
+        color: var(--sciences);
+    }
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.3);
+    z-index: 0;
+}
+
+/* ── IMAGE PRINCIPALE ARTICLE ── */
+.article-featured-image {
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .article-featured-image img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }

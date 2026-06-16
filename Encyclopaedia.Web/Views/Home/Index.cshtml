@@ -6,7 +6,7 @@
 
 <!-- ── HERO ── -->
 <section class="hero">
-    <div class="hero-bg"></div>
+    <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80')"></div>
     <div class="hero-content">
         <div class="hero-badge">📚 Encyclopédie de référence</div>
         <h1 class="hero-title">Explorez la connaissance<br><span class="hero-title-accent">sans limites</span></h1>
@@ -61,17 +61,26 @@
 <!-- ── ARTICLES EN VEDETTE ── -->
 <section class="featured-section">
     <div class="container">
-        <h2 class="section-title">Articles récents</h2>
+        <div class="section-header">
+            <h2 class="section-title">Articles récents</h2>
+            <p class="section-subtitle">Les derniers articles publiés dans notre encyclopédie</p>
+        </div>
         <div class="featured-grid">
             <div class="featured-main">
                 @if (Model.RecentArticles.Any())
                 {
                     var first = Model.RecentArticles.First();
+                    var firstTranslation = first.Translations.FirstOrDefault();
+                    var firstDomain = first.Category.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? first.Category.Domain.Slug;
                     <div class="article-card-big">
-                        <div class="article-card-domain sciences-text">@first.Category.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name</div>
-                        <h3 class="article-card-title">@first.Translations.FirstOrDefault()?.Title</h3>
+                        <div class="article-card-meta">
+                            <span class="article-domain">@firstDomain.ToUpper()</span>
+                            <span class="article-views">👁 @first.ViewCount vues</span>
+                        </div>
+                        <h3 class="article-card-title">@firstTranslation?.Title</h3>
+                        <p class="article-card-excerpt">@firstTranslation?.Summary</p>
                         <a asp-controller="Article" asp-action="Index"
-                           asp-route-slug="@first.Translations.FirstOrDefault()?.Slug"
+                           asp-route-slug="@firstTranslation?.Slug"
                            class="article-card-link">Lire l'article →</a>
                     </div>
                 }
@@ -83,18 +92,39 @@
                 }
             </div>
             <div class="featured-side">
-                @foreach (var article in Model.PopularArticles.Take(3))
+                @foreach (var article in Model.RecentArticles.Skip(1).Take(3))
                 {
+                    var translation = article.Translations.FirstOrDefault();
+                    var domainName = article.Category.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? article.Category.Domain.Slug;
                     <div class="article-card-small">
-                        <div class="article-card-domain sciences-text">@article.Category.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name</div>
-                        <h3 class="article-card-title-sm">@article.Translations.FirstOrDefault()?.Title</h3>
+                        <div class="article-card-domain sciences-text">@domainName.ToUpper()</div>
+                        <h3 class="article-card-title-sm">@translation?.Title</h3>
                         <a asp-controller="Article" asp-action="Index"
-                           asp-route-slug="@article.Translations.FirstOrDefault()?.Slug"
-                           class="article-card-link
-">Lire →</a>
+                           asp-route-slug="@translation?.Slug"
+                           class="article-card-link">Lire →</a>
                     </div>
                 }
             </div>
         </div>
     </div>
 </section>
+
+<!-- ── LE SAVIEZ-VOUS ── -->
+@if (ViewBag.RandomArticle != null)
+{
+    <section class="did-you-know">
+        <div class="container">
+            <div class="dyk-inner">
+                <div class="dyk-icon">💡</div>
+                <div class="dyk-content">
+                    <div class="dyk-label">Le saviez-vous ?</div>
+                    <p class="dyk-text">@ViewBag.RandomSummary</p>
+                    <a class="dyk-link" asp-controller="Article" asp-action="Index"
+                       asp-route-slug="@ViewBag.RandomSlug">
+                        Lire l'article complet →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+}

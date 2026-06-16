@@ -49,6 +49,14 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="FeaturedImage">Image principale (URL)</label>
+                <input asp-for="FeaturedImage" type="text" placeholder="https://images.unsplash.com/..." />
+                <small style="color:var(--text-dim); font-size:0.78rem;">
+                    Collez une URL d'image depuis Unsplash ou autre source libre de droits
+                </small>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="Content">Contenu</label>
                 <textarea asp-for="Content" rows="12" placeholder="Contenu de l'article…"></textarea>
                 <span asp-validation-for="Content" class="field-error"></span>

@@ -18,6 +18,7 @@ namespace Encyclopaedia.Web.Models
 
         [Required(ErrorMessage = "La langue est obligatoire")]
         public int LanguageId { get; set; }
+        public string? FeaturedImage { get; set; }
 
 
         // Listes pour les dropdowns

@@ -97,6 +97,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 CategoryId = model.CategoryId,
                 AuthorId = 1, // temporaire
                 Statut = Encyclopaedia.Core.Enums.ArticleStatus.Draft,
+                FeaturedImage = model.FeaturedImage,
                 CreatedAt = DateTime.UtcNow,
                 LastUpdatedAt = DateTime.UtcNow
             };

@@ -50,6 +50,21 @@ namespace Encyclopaedia.Web.Controllers
             ViewBag.TotalArticles = await _context.Articles
                .Where(a => a.Statut == ArticleStatus.Published)
                .CountAsync();
+
+            // Article aléatoire pour "Le saviez-vous ?"
+            var publishedArticles = await _context.ArticleTranslations
+                .Include(t => t.Article)
+                .Where(t => t.Article.Statut == ArticleStatus.Published)
+                .ToListAsync();
+
+            if (publishedArticles.Any())
+            {
+                var random = new Random();
+                var randomArticle = publishedArticles[random.Next(publishedArticles.Count)];
+                ViewBag.RandomArticle = randomArticle;
+                ViewBag.RandomSummary = randomArticle.Summary;
+                ViewBag.RandomSlug = randomArticle.Slug;
+            }
             //retourne la vue associée à cette action, qui est généralement située dans Views/Home/Index.cshtml.
             return View(viewModel);
         }
