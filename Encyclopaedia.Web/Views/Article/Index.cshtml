@@ -31,13 +31,23 @@
         <!-- ── ARTICLE PRINCIPAL ── -->
         <article class="article-main">
             <!--Si l'image existe on l'affiche -->
+            @{
 
-            @if (!string.IsNullOrEmpty(Model.Article.FeaturedImage))
-            {
-                <div class="article-featured-image">
-                    <img src="@Model.Article.FeaturedImage" alt="@Model.Title" />
-                </div>
+                var imageUrl = !string.IsNullOrEmpty(Model.Article.FeaturedImage)
+                ? Model.Article.FeaturedImage
+                : Model.Article.Category.Domain.Slug switch
+                {
+                    "sciences" => "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=1200&q=80",
+                    "histoire" => "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=1200&q=80",
+                    "nature" => "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80",
+                    _ => "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80"
+                };
+                
             }
+
+            <div class="article-featured-image">
+                <img src="@imageUrl" alt="@Model.Title" />
+            </div>
 
             <div class="article-meta">
                 <span class="article-domain">@domainName.ToUpper()</span>
