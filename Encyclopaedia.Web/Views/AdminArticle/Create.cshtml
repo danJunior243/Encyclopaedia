@@ -58,7 +58,7 @@
 
             <div class="form-group">
                 <label asp-for="Content">Contenu</label>
-                <textarea asp-for="Content" rows="12" placeholder="Contenu de l'article…"></textarea>
+                <textarea asp-for="Content" id="content-editor" rows="12" placeholder="Contenu de l'article…"></textarea>
                 <span asp-validation-for="Content" class="field-error"></span>
             </div>
         </div>
@@ -71,3 +71,17 @@
     </form>
 
 </div>
+
+
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: '#content-editor',
+            height: 400,
+            menubar: false,
+            plugins: 'lists link image table code',
+            toolbar: 'undo redo | bold italic underline | bullist numlist | link image table | code',
+            content_style: 'body { font-family: Inter, sans-serif; font-size: 14px; }'
+        });
+    </script>
+}
