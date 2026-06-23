@@ -3,15 +3,28 @@
 @{
     var domainName = Model.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? Model.Slug;
     ViewData["Title"] = domainName;
+
+    var heroImage = Model.Slug switch
+    {
+        "sciences" => "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=1600&q=80",
+        "histoire" => "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=1600&q=80",
+        "nature" => "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80",
+        _ => "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80"
+    };
+
+    var totalArticles = Model.Categories.Sum(c => c.Articles.Count(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published));
 }
 
-<div class="article-page">
-
-    <!-- ── TITRE DU DOMAINE ── -->
-    <div class="domain-hero">
-        <h1 class="domain-title">@domainName</h1>
-        <p class="domain-count">@Model.Categories.Count catégorie(s)</p>
+<!-- ── HERO DOMAINE ── -->
+<section class="domain-page-hero" style="background-image: url('@heroImage')">
+    <div class="domain-page-hero-overlay"></div>
+    <div class="domain-page-hero-content">
+        <h1 class="domain-page-title">@domainName</h1>
+        <p class="domain-page-stats">@Model.Categories.Count catégorie(s) · @totalArticles article(s)</p>
     </div>
+</section>
+
+<div class="article-page">
 
     <!-- ── CATÉGORIES ── -->
     <section style="margin-bottom: 3rem;">
@@ -20,9 +33,10 @@
             @foreach (var category in Model.Categories.OrderBy(c => c.SortOrder))
             {
                 var catName = category.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? category.Slug;
+                var pubCount = category.Articles.Count(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published);
                 <a class="category-card" asp-controller="Category" asp-action="Index" asp-route-slug="@category.Slug">
                     <div class="category-card-name">@catName</div>
-                    <div class="category-card-count">@category.Articles.Count article(s)</div>
+                    <div class="category-card-count">@pubCount article(s)</div>
                 </a>
             }
         </div>
@@ -40,12 +54,13 @@
                             .Take(3))
                 {
                     var translation = article.Translations.FirstOrDefault();
+                    var catName = category.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? category.Slug;
                     if (translation != null)
                     {
                         <div class="search-result-card">
                             <div class="search-result-meta">
-                                <span class="article-domain">@domainName</span>
-                                <span class="article-category">@category.Slug</span>
+                                <span class="article-domain">@domainName.ToUpper()</span>
+                                <span class="article-category">@catName</span>
                             </div>
                             <h2 class="search-result-title">
                                 <a asp-controller="Article" asp-action="Index"

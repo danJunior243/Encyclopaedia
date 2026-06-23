@@ -79,6 +79,55 @@ namespace Encyclopaedia.Web.Controllers.Admin
                     }
                 }
             }
+            else if (model.Type == "articles")
+            {
+                var records = csv.GetRecords<ArticleCsvModel>().ToList();
+                var slugHelper = new Slugify.SlugHelper();
+
+                foreach (var record in records)
+                {
+                    try
+                    {
+                        var status = Enum.TryParse<Encyclopaedia.Core.Enums.ArticleStatus>(record.Statut, out var parsedStatus)
+                            ? parsedStatus
+                            : Encyclopaedia.Core.Enums.ArticleStatus.Draft;
+
+                        var article = new Article
+                        {
+                            CategoryId = record.CategoryId,
+                            AuthorId = 1,
+                            Statut = status,
+                            FeaturedImage = string.IsNullOrEmpty(record.FeaturedImage) ? null : record.FeaturedImage,
+                            CreatedAt = DateTime.UtcNow,
+                            LastUpdatedAt = DateTime.UtcNow,
+                            PublishAt = status == Encyclopaedia.Core.Enums.ArticleStatus.Published ? DateTime.UtcNow : null
+                        };
+
+                        _context.Articles.Add(article);
+                        await _context.SaveChangesAsync();
+
+                        var translation = new ArticleTranslation
+                        {
+                            ArticleId = article.ArticleId,
+                            LanguageId = record.LanguageId,
+                            Title = record.Title,
+                            Summary = record.Summary,
+                            Content = record.Content,
+                            Slug = slugHelper.GenerateSlug(record.Title)
+                        };
+
+                        _context.ArticleTranslations.Add(translation);
+                        await _context.SaveChangesAsync();
+
+                        model.ImportedCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        model.Errors.Add($"Erreur sur {record.Title} : {ex.Message}");
+                    }
+                }
+            }
+
 
             model.Success = model.ImportedCount > 0;
             return View("~/Views/Import/Index.cshtml", model);
@@ -96,4 +145,17 @@ namespace Encyclopaedia.Web.Controllers.Admin
         public string NameEn { get; set; } = string.Empty;
         public string NameAr { get; set; } = string.Empty;
     }
+
+    // Cette classe est un modèle pour l'importation d'articles depuis un fichier CSV. Elle contient les propriétés nécessaires pour créer un article et sa traduction dans la base de données.
+    public class ArticleCsvModel
+    {
+        public string Title { get; set; } = string.Empty;
+        public string Summary { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public int CategoryId { get; set; }
+        public int LanguageId { get; set; }
+        public string FeaturedImage { get; set; } = string.Empty;
+        public string Statut { get; set; } = "Draft";
+    }
+
 }

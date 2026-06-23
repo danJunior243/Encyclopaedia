@@ -93,7 +93,8 @@
                                 {
                                     <a asp-controller="AdminArticle" asp-action="Publish" asp-route-id="@article.Id">✅</a>
                                 }
-                                <a asp-controller="AdminArticle" asp-action="Delete" asp-route-id="@article.Id">🗑️</a>
+                                <a asp-controller="AdminArticle" asp-action="Delete" asp-route-id="@article.Id"
+                                   onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.');">🗑️</a>
                             </td>
                         </tr>
                     }

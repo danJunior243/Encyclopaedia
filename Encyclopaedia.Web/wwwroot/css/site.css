@@ -1563,3 +1563,69 @@ a {
         height: 250px;
         object-fit: cover;
     }
+
+/* ── HERO PAGE DOMAINE ── */
+.domain-page-hero {
+    position: relative;
+    height: 280px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.domain-page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.5), rgba(10,10,10,0.75));
+}
+
+.domain-page-hero-content {
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
+.domain-page-title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+}
+
+.domain-page-stats {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.8);
+}
+/* ── ARTICLE LIST CARD (avec image) ── */
+.article-list-card {
+    display: flex;
+    gap: 1.5rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+}
+
+    .article-list-card:hover {
+        border-color: var(--sciences);
+    }
+
+.article-list-image {
+    width: 160px;
+    height: 120px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+}
+
+.article-list-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}

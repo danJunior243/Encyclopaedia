@@ -4,7 +4,29 @@
     var catName = Model.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? Model.Slug;
     var domainName = Model.Domain.Translations.FirstOrDefault(t => t.LanguageId == 1)?.Name ?? Model.Domain.Slug;
     ViewData["Title"] = catName;
+
+    var heroImage = Model.Domain.Slug switch
+    {
+        "sciences" => "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=1600&q=80",
+        "histoire" => "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=1600&q=80",
+        "nature" => "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80",
+        _ => "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80"
+    };
+
+    var publishedArticles = Model.Articles
+        .Where(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published)
+        .OrderByDescending(a => a.PublishAt)
+        .ToList();
 }
+
+<!-- ── HERO CATÉGORIE ── -->
+<section class="domain-page-hero" style="background-image: url('@heroImage'); height:200px;">
+    <div class="domain-page-hero-overlay"></div>
+    <div class="domain-page-hero-content">
+        <h1 class="domain-page-title" style="font-size:2.2rem;">@catName</h1>
+        <p class="domain-page-stats">@publishedArticles.Count article(s) publié(s)</p>
+    </div>
+</section>
 
 <div class="article-page">
 
@@ -19,23 +41,8 @@
         <span>@catName</span>
     </div>
 
-    <!-- ── TITRE ── -->
-    <div class="domain-hero">
-        <h1 class="domain-title">@catName</h1>
-        <p class="domain-count">
-            @Model.Articles.Count(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published) article(s) publié(s)
-        </p>
-    </div>
-
     <!-- ── ARTICLES ── -->
     <div class="search-results">
-        @{
-            var publishedArticles = Model.Articles
-            .Where(a => a.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published)
-            .OrderByDescending(a => a.PublishAt)
-            .ToList();
-        }
-
         @if (publishedArticles.Any())
         {
             @foreach (var article in publishedArticles)
@@ -43,26 +50,21 @@
                 var translation = article.Translations.FirstOrDefault();
                 if (translation != null)
                 {
-                    <div class="search-result-card">
-                        <div class="search-result-meta">
-                            <span class="article-domain">@domainName</span>
-                            <span class="article-category">@catName</span>
-                            <span style="margin-left:auto; font-size:0.8rem; color:var(--text-dim)">
-                                👁 @article.ViewCount vues
-                            </span>
+                    var cardImage = !string.IsNullOrEmpty(article.FeaturedImage) ? article.FeaturedImage : heroImage;
+                    <a class="article-list-card" asp-controller="Article" asp-action="Index" asp-route-slug="@translation.Slug">
+                        <div class="article-list-image" style="background-image: url('@cardImage')"></div>
+                        <div class="article-list-content">
+                            <div class="search-result-meta">
+                                <span class="article-domain">@domainName.ToUpper()</span>
+                                <span style="margin-left:auto; font-size:0.8rem; color:var(--text-dim)">
+                                    👁 @article.ViewCount vues
+                                </span>
+                            </div>
+                            <h2 class="search-result-title">@translation.Title</h2>
+                            <p class="search-result-summary">@translation.Summary</p>
+                            <span class="search-result-link">Lire l'article →</span>
                         </div>
-                        <h2 class="search-result-title">
-                            <a asp-controller="Article" asp-action="Index"
-                               asp-route-slug="@translation.Slug">
-                                @translation.Title
-                            </a>
-                        </h2>
-                        <p class="search-result-summary">@translation.Summary</p>
-                        <a class="search-result-link" asp-controller="Article"
-                           asp-action="Index" asp-route-slug="@translation.Slug">
-                            Lire l'article →
-                        </a>
-                    </div>
+                    </a>
                 }
             }
         }
