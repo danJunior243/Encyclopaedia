@@ -1,0 +1,86 @@
+﻿@model Encyclopaedia.Web.Models.ArticleCreateViewModel
+
+@{
+    ViewData["Title"] = "Modifier l'article";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-wrapper">
+
+    <!-- ── TITRE ── -->
+    <div class="admin-header">
+        <h1 class="admin-title">Modifier l'article</h1>
+        <p class="admin-subtitle">Modifier les informations de l'article</p>
+    </div>
+
+    <form asp-action="Edit" asp-route-id="@ViewBag.ArticleId" method="post">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div asp-validation-summary="All" class="login-error"></div>
+        }
+
+        <div class="admin-section">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Title">Titre</label>
+                    <input asp-for="Title" type="text" placeholder="Titre de l'article" />
+                    <span asp-validation-for="Title" class="field-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LanguageId">Langue</label>
+                    <select asp-for="LanguageId" asp-items="Model.Languages">
+                        <option value="">-- Choisir une langue --</option>
+                    </select>
+                    <span asp-validation-for="LanguageId" class="field-error"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CategoryId">Catégorie</label>
+                <select asp-for="CategoryId" asp-items="Model.Categories">
+                    <option value="">-- Choisir une catégorie --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Summary">Résumé</label>
+                <textarea asp-for="Summary" rows="3" placeholder="Bref résumé de l'article…"></textarea>
+                <span asp-validation-for="Summary" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FeaturedImage">Image principale (URL)</label>
+                <input asp-for="FeaturedImage" type="text" placeholder="https://images.unsplash.com/..." />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Content">Contenu</label>
+                <textarea asp-for="Content" id="content-editor" rows="12"></textarea>
+                <span asp-validation-for="Content" class="field-error"></span>
+            </div>
+
+        </div>
+
+        <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1rem;">
+            <a asp-action="Index" class="btn-admin-cancel">Annuler</a>
+            <button type="submit" class="btn-admin-add">Enregistrer les modifications</button>
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <script>
+        tinymce.init({
+            selector: '#content-editor',
+            height: 400,
+            menubar: false,
+            plugins: 'lists link image table code',
+            toolbar: 'undo redo | bold italic underline | bullist numlist | link image table | code',
+            content_style: 'body { font-family: Inter, sans-serif; font-size: 14px; }'
+        });
+    </script>
+}

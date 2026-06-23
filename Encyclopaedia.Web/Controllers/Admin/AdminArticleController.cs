@@ -125,6 +125,108 @@ namespace Encyclopaedia.Web.Controllers.Admin
             return RedirectToAction("Index");
         }
 
+
+        // ── GET /AdminArticle/Edit/5 ──
+        public async Task<IActionResult> Edit(int id)
+        {
+            var article = await _context.Articles
+                .Include(a => a.Translations)
+                .FirstOrDefaultAsync(a => a.ArticleId == id);
+
+            if (article == null)
+                return NotFound();
+
+            var translation = article.Translations.FirstOrDefault();
+
+            var model = new ArticleCreateViewModel
+            {
+                Title = translation?.Title ?? "",
+                Summary = translation?.Summary ?? "",
+                Content = translation?.Content ?? "",
+                CategoryId = article.CategoryId,
+                LanguageId = translation?.LanguageId ?? 1,
+                FeaturedImage = article.FeaturedImage,
+
+                Categories = await _context.Categories
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.CategoryId.ToString(),
+                        Text = c.Slug
+                    }).ToListAsync(),
+
+                Languages = await _context.Languages
+                    .Where(l => l.IsActive)
+                    .Select(l => new SelectListItem
+                    {
+                        Value = l.LanguageId.ToString(),
+                        Text = l.Name
+                    }).ToListAsync()
+            };
+
+            ViewBag.ArticleId = id;
+            return View("~/Views/AdminArticle/Edit.cshtml", model);
+        }
+
+        // ── POST /AdminArticle/Edit/5 ──
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, ArticleCreateViewModel model)
+        {
+
+            // ici si le formulaire n'est pas valide on retourne la vue
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ArticleId = id;
+                return View("~/Views/AdminArticle/Edit.cshtml", model);
+            }
+
+            // Ici on recupère l'article en cherchant si l'id correspond
+            var article = await _context.Articles
+                .Include(a => a.Translations)
+                .FirstOrDefaultAsync(a => a.ArticleId == id);
+
+            // Si l'article n'existe pas alors on retourne not found cad rien
+            if (article == null)
+                return NotFound();
+            // On modifie l'article
+
+            article.CategoryId = model.CategoryId;
+            article.FeaturedImage = model.FeaturedImage;
+            article.LastUpdatedAt = DateTime.UtcNow;
+            //on modifie la traduction aussi en verificant si le id de la langue correspond à l'objet
+
+            var translation = article.Translations.FirstOrDefault(t => t.LanguageId == model.LanguageId);
+            if (translation != null)
+            {
+                translation.Title = model.Title;
+                translation.Summary = model.Summary;
+                translation.Content = model.Content;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
+        // ── Supprimer un article ──
+        public async Task<IActionResult> Delete(int id)
+        {
+            var article = await _context.Articles
+                .Include(a => a.Translations)
+                .FirstOrDefaultAsync(a => a.ArticleId == id);
+
+            if (article == null)
+                return NotFound();
+            // il faut supprimer les traductions avant de supprimer l'article pour éviter les problèmes de clé étrangère
+            //  Et on utilise RemoveRange pour supprimer toutes les traductions de l'article en une seule opération 
+
+            _context.ArticleTranslations.RemoveRange(article.Translations);
+            _context.Articles.Remove(article);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
         // ── Publier un article ──
         public async Task<IActionResult> Publish(int id)
         {
