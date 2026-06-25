@@ -1629,3 +1629,235 @@ a {
     display: flex;
     flex-direction: column;
 }
+
+/* ══════════════════════════════════════
+   RESPONSIVE MOBILE
+   ══════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* ── HEADER ── */
+    .enc-header-inner {
+        flex-wrap: wrap;
+        padding: 0.75rem 1rem;
+        gap: 0.75rem;
+    }
+
+    .enc-logo {
+        font-size: 1.3rem;
+    }
+
+    .enc-search-form {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .enc-nav-right {
+        gap: 0.75rem;
+    }
+
+    .enc-lang-switcher {
+        font-size: 0.72rem;
+    }
+
+    .enc-login-btn {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.78rem;
+    }
+
+    .enc-domain-nav {
+        padding: 0 1rem;
+        overflow-x: auto;
+    }
+
+    .enc-domain-link {
+        padding: 0.6rem 1rem;
+        font-size: 0.78rem;
+        white-space: nowrap;
+    }
+
+    /* ── HERO ── */
+    .hero {
+        padding: 3rem 1.25rem;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .hero-search {
+        flex-direction: column;
+        border-radius: 10px;
+    }
+
+    .hero-search-btn {
+        border-left: none;
+        border-top: 1px solid #eee;
+    }
+
+    .hero-stats {
+        gap: 1rem;
+    }
+
+    .hero-stat-num {
+        font-size: 1.5rem;
+    }
+
+    /* ── DOMAINES ── */
+    .domains-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .domain-card {
+        padding: 1.25rem;
+    }
+
+    .domain-card-icon {
+        font-size: 2rem;
+    }
+
+    /* ── ARTICLES EN VEDETTE ── */
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .article-card-big {
+        padding: 1.5rem;
+    }
+
+    .article-card-title {
+        font-size: 1.4rem;
+    }
+
+    /* ── LE SAVIEZ-VOUS ── */
+    .dyk-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    .enc-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+
+    /* ── PAGE ARTICLE ── */
+    .article-page {
+        padding: 1rem;
+    }
+
+    .article-container {
+        grid-template-columns: 1fr;
+    }
+
+    .article-sidebar {
+        position: static;
+        max-height: none;
+    }
+
+    .article-main {
+        padding: 1.5rem;
+    }
+
+    .article-title {
+        font-size: 1.7rem;
+    }
+
+    .article-featured-image img {
+        height: 180px;
+    }
+
+    .breadcrumb {
+        flex-wrap: wrap;
+        font-size: 0.75rem;
+    }
+
+    /* ── RECHERCHE ── */
+    .search-result-card,
+    .article-list-card {
+        flex-direction: column;
+    }
+
+    .article-list-image {
+        width: 100%;
+        height: 160px;
+    }
+
+    /* ── HERO PAGE DOMAINE ── */
+    .domain-page-title {
+        font-size: 2rem;
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* ── ADMIN LAYOUT MOBILE ── */
+    .admin-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-sidebar {
+        position: relative;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .sidebar-logo,
+    .sidebar-subtitle {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .sidebar-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.78rem;
+        border-left: none;
+        border-radius: 6px;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .sidebar-footer {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+        border-top: none;
+        padding-top: 0.5rem;
+    }
+
+    /* ── ADMIN CONTENT ── */
+    .admin-wrapper {
+        padding: 1rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-table {
+        font-size: 0.78rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
