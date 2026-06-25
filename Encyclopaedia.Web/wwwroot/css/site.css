@@ -1861,3 +1861,76 @@ a {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── THEME TOGGLE ── */
+.theme-toggle {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .theme-toggle:hover {
+        background: rgba(255,255,255,0.15);
+    }
+
+/* ── DARK MODE ── */
+body.dark-mode {
+    --cream: #1a1a1a;
+    --text: #e8e3d8;
+    --text-dim: #999;
+    --border: #333;
+}
+
+    body.dark-mode .article-main,
+    body.dark-mode .sidebar-card,
+    body.dark-mode .domain-card-content,
+    body.dark-mode .stat-card,
+    body.dark-mode .admin-section,
+    body.dark-mode .search-result-card,
+    body.dark-mode .article-list-card,
+    body.dark-mode .category-card,
+    body.dark-mode .domains-section,
+    body.dark-mode .featured-section,
+    body.dark-mode .login-card {
+        background: #242424;
+    }
+
+    body.dark-mode .domains-section,
+    body.dark-mode .featured-section {
+        background: #1a1a1a;
+    }
+
+    /* ── DARK MODE - TEXTES ── */
+    body.dark-mode .article-card-title,
+    body.dark-mode .article-card-title-sm,
+    body.dark-mode .domain-card-name,
+    body.dark-mode .category-card-name,
+    body.dark-mode .search-result-title a,
+    body.dark-mode .admin-title,
+    body.dark-mode .sidebar-info-value {
+        color: var(--text);
+    }
+
+    body.dark-mode .article-card-excerpt,
+    body.dark-mode .article-card-domain,
+    body.dark-mode .domain-card-desc,
+    body.dark-mode .category-card-count,
+    body.dark-mode .search-result-summary,
+    body.dark-mode .admin-subtitle,
+    body.dark-mode .sidebar-info-label {
+        color: var(--text-dim);
+    }
+
+    body.dark-mode .article-card-link {
+        color: var(--text);
+        border-bottom-color: var(--text);
+    }
+    body.dark-mode .article-card-big,
+    body.dark-mode .article-card-small {
+        background: #242424;
+    }
