@@ -53,8 +53,13 @@
         </div>
 
         <!-- Navigation domaines -->
+       
+
         <nav class="enc-domain-nav">
             <div class="container-fluid">
+                <a class="enc-domain-link" asp-controller="Articles" asp-action="Index">
+                    Tous
+                </a>
                 <a class="enc-domain-link sciences" asp-controller="Domain" asp-action="Index" asp-route-slug="sciences">
                     Sciences
                 </a>
@@ -112,7 +117,7 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
-        // Charger le thème sauvegardé
+            // Charger le thème sauvegardé
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
             document.getElementById('theme-toggle').textContent = '☀️';
@@ -124,7 +129,71 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
             document.getElementById('theme-toggle').textContent = isDark ? '☀️' : '🌙';
         }
+
+        // ── BOUTON RETOUR EN HAUT ──
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+                // ── AUTOCOMPLETE ──
+        const searchInput = document.querySelector('.enc-search-input');
+
+        if (searchInput) {
+            // Créer le conteneur de suggestions
+            const suggestBox = document.createElement('div');
+            suggestBox.className = 'suggest-box';
+            searchInput.parentElement.appendChild(suggestBox);
+
+            searchInput.addEventListener('input', async function() {
+                const q = this.value.trim();
+                suggestBox.innerHTML = '';
+
+                if (q.length < 2) {
+                    suggestBox.style.display = 'none';
+                    return;
+                }
+
+                const response = await fetch(`/Search/Suggest?q=${encodeURIComponent(q)}`);
+                const suggestions = await response.json();
+
+                if (suggestions.length === 0) {
+                    suggestBox.style.display = 'none';
+                    return;
+                }
+
+                suggestBox.style.display = 'block';
+                suggestions.forEach(s => {
+                    const item = document.createElement('a');
+                    item.href = `/article/${s.slug}`;
+                    item.className = 'suggest-item';
+                    item.textContent = s.title;
+                    suggestBox.appendChild(item);
+                });
+            });
+
+            // Fermer les suggestions si on clique ailleurs
+            document.addEventListener('click', function(e) {
+                if (!searchInput.parentElement.contains(e.target)) {
+                    suggestBox.style.display = 'none';
+                }
+            });
+        }
+
+
+
+
     </script>
 
+    <!-- ── BOUTON RETOUR EN HAUT ── -->
+    <button class="back-to-top" id="back-to-top" onclick="scrollToTop()">↑</button>
 </body>
 </html>

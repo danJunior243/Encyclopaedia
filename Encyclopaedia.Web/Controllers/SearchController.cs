@@ -14,6 +14,28 @@ namespace Encyclopaedia.Web.Controllers
             _context = context;
         }
 
+
+        // ── Autocomplete ──
+        /// <summary>
+        ///  Cette fonction est là pour proposer des suggestions lorsque l'on fait une recherche
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Suggest(string q)
+        {
+            if (string.IsNullOrEmpty(q) || q.Length < 2)
+                return Json(new List<string>());
+
+            var suggestions = await _context.ArticleTranslations
+                .Where(t => t.Title.Contains(q) &&
+                            t.Article.Statut == Encyclopaedia.Core.Enums.ArticleStatus.Published)
+                .Select(t => new { t.Title, t.Slug })
+                .Take(5)
+                .ToListAsync();
+
+            return Json(suggestions);
+        }
+
         public async Task<IActionResult> Index(string q)
         {
             // si la query est vide, on retourne une vue avec une liste vide d'articles

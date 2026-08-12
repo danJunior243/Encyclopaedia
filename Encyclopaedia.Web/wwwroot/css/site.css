@@ -1934,3 +1934,115 @@ body.dark-mode {
     body.dark-mode .article-card-small {
         background: #242424;
     }
+
+/* ── TEMPS DE LECTURE ── */
+.article-reading-time {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+}
+
+/* ── BOUTON RETOUR EN HAUT ── */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 44px;
+    height: 44px;
+    background: var(--text);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+    .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .back-to-top:hover {
+        background: var(--sciences);
+        transform: translateY(-2px);
+    }
+
+/* ── AUTOCOMPLETE ── */
+.search-wrap {
+    position: relative;
+}
+
+.suggest-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    z-index: 200;
+    display: none;
+    overflow: hidden;
+}
+
+.suggest-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+}
+
+    .suggest-item:last-child {
+        border-bottom: none;
+    }
+
+    .suggest-item:hover {
+        background: var(--cream);
+        color: var(--sciences);
+    }
+
+/* Dark mode */
+body.dark-mode .suggest-box {
+    background: #242424;
+    border-color: #333;
+}
+
+body.dark-mode .suggest-item {
+    color: var(--text);
+    border-bottom-color: #333;
+}
+
+    body.dark-mode .suggest-item:hover {
+        background: #2a2a2a;
+    }
+/* ── FILTRES ARTICLES ── */
+.articles-filters {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    font-weight: 500;
+}

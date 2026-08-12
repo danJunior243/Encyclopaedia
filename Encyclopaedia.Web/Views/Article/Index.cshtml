@@ -53,6 +53,13 @@
                 <span class="article-domain">@domainName.ToUpper()</span>
                 <span class="article-category">@catName</span>
                 <span class="article-views">👁 @Model.Article.ViewCount vues</span>
+                <span class="article-reading-time">
+                    ⏱ @{
+                    var wordCount = Model.Content.Split(' ').Length;
+                    var readingTime = Math.Max(1, wordCount / 200);
+                                        }
+                    @readingTime min de lecture
+                </span>
             </div>
 
             <h1 class="article-title">@Model.Title</h1>

@@ -1,0 +1,102 @@
+﻿@model List<Encyclopaedia.Core.Entities.ArticleTranslation>
+
+@{
+    ViewData["Title"] = "Tous les articles";
+    string? domaine = ViewBag.Domaine;
+    string? tri = ViewBag.Tri;
+}
+
+<div class="article-page">
+
+    <!-- ── TITRE ── -->
+    <div class="search-header">
+        <h1 class="search-title">Tous les articles</h1>
+        <p class="search-count">@ViewBag.TotalArticles article(s) publié(s)</p>
+    </div>
+
+    <!-- ── FILTRES ── -->
+    <div class="articles-filters">
+
+        <!-- Filtre par domaine -->
+        <div class="filter-group">
+            <span class="filter-label">Domaine :</span>
+            <a class="filter-btn @(domaine == null ? "active" : "")"
+               asp-controller="Articles" asp-action="Index" asp-route-tri="@tri">
+                Tous
+            </a>
+            <a class="filter-btn @(domaine == "sciences" ? "active" : "")"
+               asp-controller="Articles" asp-action="Index" asp-route-domaine="sciences" asp-route-tri="@tri">
+                Sciences
+            </a>
+            <a class="filter-btn @(domaine == "histoire" ? "active" : "")"
+               asp-controller="Articles" asp-action="Index" asp-route-domaine="histoire" asp-route-tri="@tri">
+                Histoire
+            </a>
+            <a class="filter-btn @(domaine == "nature" ? "active" : "")"
+               asp-controller="Articles" asp-action="Index" asp-route-domaine="nature" asp-route-tri="@tri">
+                Nature
+            </a>
+        </div>
+
+        <!-- Tri -->
+        <div class="filter-group">
+            <span class="filter-label">Trier par :</span>
+            <a class="filter-btn @(tri == null ? "active" : "")"
+               asp-controller="Articles" asp-action="Index" asp-route-domaine="@domaine">
+                Récents
+            </a>
+            <a class="filter-btn @(tri == "populaires" ? "active" : "")"
+               asp-controller="Articles" asp-action="Index" asp-route-domaine="@domaine" asp-route-tri="populaires">
+                Populaires
+            </a>
+        </div>
+
+    </div>
+
+    <!-- ── LISTE ARTICLES ── -->
+    @if (Model.Any())
+    {
+        <div class="search-results">
+            @foreach (var article in Model)
+            {
+                var domainName = article.Article.Category.Domain.Translations
+                .FirstOrDefault(t => t.LanguageId == 1)?.Name ?? article.Article.Category.Domain.Slug;
+                var catName = article.Article.Category.Translations
+                .FirstOrDefault(t => t.LanguageId == 1)?.Name ?? article.Article.Category.Slug;
+                var imageUrl = !string.IsNullOrEmpty(article.Article.FeaturedImage)
+                ? article.Article.FeaturedImage
+                : article.Article.Category.Domain.Slug switch
+                {
+                    "sciences" => "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=400&q=80",
+                    "histoire" => "https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400&q=80",
+                    "nature" => "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=80",
+                    _ => "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&q=80"
+                };
+
+                <a class="article-list-card" asp-controller="Article" asp-action="Index" asp-route-slug="@article.Slug">
+                    <div class="article-list-image" style="background-image: url('@imageUrl')"></div>
+                    <div class="article-list-content">
+                        <div class="search-result-meta">
+                            <span class="article-domain">@domainName.ToUpper()</span>
+                            <span class="article-category">@catName</span>
+                            <span style="margin-left:auto; font-size:0.8rem; color:var(--text-dim)">
+                                👁 @article.Article.ViewCount vues
+                            </span>
+                        </div>
+                        <h2 class="search-result-title">@article.Title</h2>
+                        <p class="search-result-summary">@article.Summary</p>
+                        <span class="search-result-link">Lire l'article →</span>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="search-empty">
+            <div class="search-empty-icon">📄</div>
+            <p>Aucun article trouvé.</p>
+        </div>
+    }
+
+</div>

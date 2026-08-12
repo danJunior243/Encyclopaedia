@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Encyclopaedia.Web.Controllers
 {
 
+    // Ce controller nous permet de gerer un seul article de notre encyclopedie
 
     public class ArticleController : Controller
     {
