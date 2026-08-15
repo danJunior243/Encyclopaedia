@@ -112,10 +112,10 @@ a {
 .enc-nav-right {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.75rem;
     white-space: nowrap;
+    flex-shrink: 0;
 }
-
 /* Sélecteur de langue */
 .enc-lang-switcher {
     display: flex;
@@ -2046,3 +2046,36 @@ body.dark-mode .suggest-item {
     color: var(--text-dim);
     font-weight: 500;
 }
+
+
+/* ── TOAST MESSAGE ── */
+.toast-message {
+    position: fixed;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1a1a1a;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+    .toast-message.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+/* ── BOUTON FAVORI ── */
+.enc-fav-btn {
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+}
+
+    .enc-fav-btn:hover {
+        transform: scale(1.2);
+    }

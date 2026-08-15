@@ -79,6 +79,12 @@
                 <span class="article-share-label">Partager :</span>
                 <a class="share-btn" href="https://twitter.com/intent/tweet?text=@Model.Title" target="_blank">𝕏</a>
                 <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=@Context.Request.Path" target="_blank">f</a>
+                <button class="share-btn fav-btn" id="fav-btn"
+                        onclick="toggleFavorite('@Model.Slug', '@Model.Title')"
+                        title="Ajouter aux favoris">
+                    ❤️
+                </button>
+
             </div>
 
         </article>
@@ -127,3 +133,10 @@
     </div>
 
 </div>
+@section Scripts {
+    <script>
+        checkFavorite('@Model.Slug');
+    </script>
+}
+
+

@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Category\" />
+    <Folder Include="Views\NewFolder\" />
   </ItemGroup>
 
 </Project>

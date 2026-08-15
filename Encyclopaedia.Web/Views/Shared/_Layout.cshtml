@@ -36,6 +36,9 @@
                 <!-- Sélecteur de langue -->
 
                 <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+                <a class="enc-fav-btn" asp-controller="Favorites" asp-action="Index">
+                    ❤️
+                </a>
                 <div class="enc-lang-switcher">
                     <a href="/fr">FR</a>
                     <span>|</span>
@@ -69,8 +72,12 @@
                 <a class="enc-domain-link nature" asp-controller="Domain" asp-action="Index" asp-route-slug="nature">
                     Nature
                 </a>
+
+                
             </div>
         </nav>
+        
+
     </header>
 
     <!-- ── CONTENU PRINCIPAL ── -->
@@ -189,7 +196,48 @@
         }
 
 
+                // ── FAVORIS ──
+        function toggleFavorite(slug, title) {
+            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const index = favorites.findIndex(f => f.slug === slug);
+            const btn = document.getElementById('fav-btn');
 
+            if (index === -1) {
+                favorites.push({ slug, title });
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                btn.textContent = '❤️';
+                btn.style.opacity = '1';
+                showToast('Article ajouté aux favoris !');
+            } else {
+                favorites.splice(index, 1);
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+                btn.textContent = '🤍';
+                btn.style.opacity = '0.6';
+                showToast('Article retiré des favoris');
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-message';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('visible'), 100);
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Vérifier si l'article est déjà en favori
+        function checkFavorite(slug) {
+            const btn = document.getElementById('fav-btn');
+            if (!btn) return;
+            const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+            const isFav = favorites.some(f => f.slug === slug);
+            btn.textContent = isFav ? '❤️' : '🤍';
+            btn.style.opacity = isFav ? '1' : '0.6';
+        }
 
     </script>
 
