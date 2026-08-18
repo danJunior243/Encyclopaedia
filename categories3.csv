@@ -1,0 +1,4 @@
+Slug,DomainId,ParentId,SortOrder,NameFr,NameEn,NameAr
+biologie,1,0,1,Biologie,Biology,علم الأحياء
+physique,1,0,2,Physique,Physics,الفيزياء
+chimie,1,0,3,Chimie,Chemistry,الكيمياء
