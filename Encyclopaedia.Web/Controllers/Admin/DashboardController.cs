@@ -21,26 +21,28 @@ namespace Encyclopaedia.Web.Controllers.Admin
         {
             var viewModel = new DashboardViewModel
             {
-                // On compte le nom total d'articles dans la base de données et on le stocke dans une variable du modèle de vue
                 TotalArticles = await _context.Articles.CountAsync(),
 
-                // On regroupe les articles par statut, on compte le nombre d'articles dans chaque groupe,
-                // et on stocke le résultat dans un dictionnaire du modèle de vue
                 ArticlesByStatus = await _context.Articles
-                    .GroupBy(a => a.Statut)
-                    .ToDictionaryAsync(g => g.Key, g => g.Count()),
-                // On regroupe les articles par domaine, on compte le nombre d'articles dans chaque groupe,
-                // et on stocke le résultat dans un dictionnaire du modèle de vue
+            .GroupBy(a => a.Statut)
+            .ToDictionaryAsync(g => g.Key, g => g.Count()),
+
                 ArticlesByDomain = await _context.Articles
-                    .GroupBy(a => a.Category.Domain.Slug)
-                    .ToDictionaryAsync(g => g.Key, g => g.Count()),
-                // On récupère les 5 articles les plus récemment mis à jour, triés par date de mise à jour décroissante,
+            .GroupBy(a => a.Category.Domain.Slug)
+            .ToDictionaryAsync(g => g.Key, g => g.Count()),
 
                 RecentlyUpdated = await _context.Articles
-                    .OrderByDescending(a => a.LastUpdatedAt)
-                    .Take(5)
-                    .ToListAsync()
+            .OrderByDescending(a => a.LastUpdatedAt)
+            .Take(5)
+            .ToListAsync()
             };
+
+            // Données pour les graphiques
+            ViewBag.DomainLabels = viewModel.ArticlesByDomain.Keys.ToList();
+            ViewBag.DomainData = viewModel.ArticlesByDomain.Values.ToList();
+
+            ViewBag.StatusLabels = viewModel.ArticlesByStatus.Keys.Select(s => s.ToString()).ToList();
+            ViewBag.StatusData = viewModel.ArticlesByStatus.Values.ToList();
 
             return View(viewModel);
         }

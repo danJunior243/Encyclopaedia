@@ -59,4 +59,58 @@
         </table>
     </div>
 
+    <!-- ── GRAPHIQUES ── -->
+    <div class="stats-charts">
+        <div class="admin-section">
+            <h2 class="admin-section-title">Articles par domaine</h2>
+            <canvas id="domainChart" height="200"></canvas>
+        </div>
+        <div class="admin-section">
+            <h2 class="admin-section-title">Articles par statut</h2>
+            <canvas id="statusChart" height="200"></canvas>
+        </div>
+    </div>
+
+
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Graphique par domaine
+        new Chart(document.getElementById('domainChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.DomainLabels)),
+                datasets: [{
+                    label: 'Articles',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.DomainData)),
+                    backgroundColor: ['#2A6099', '#8B2635', '#2D6A4F'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Graphique par statut
+        new Chart(document.getElementById('statusChart'), {
+            type: 'doughnut',
+            data: {
+                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.StatusLabels)),
+                datasets: [{
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewBag.StatusData)),
+                    backgroundColor: ['#6B6B6B', '#856404', '#0a3622', '#842029'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    </script>
+}

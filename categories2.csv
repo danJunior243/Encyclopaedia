@@ -1,0 +1,5 @@
+Slug,DomainId,ParentId,SortOrder,NameFr,NameEn,NameAr
+epoque-moderne,2,0,3,Epoque moderne,Modern Era,العصر الحديث
+civilisations,2,0,4,Civilisations,Civilizations,الحضارات
+faune,3,0,3,Faune,Wildlife,الحيوانات البرية
+climat,3,0,4,Climat,Climate,المناخ
