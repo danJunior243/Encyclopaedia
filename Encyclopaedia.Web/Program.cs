@@ -12,12 +12,11 @@ builder.Services.AddControllersWithViews();
 
 // ── Base de données ──
 // ── Base de données ──
-builder.Services.AddDbContext<EncyclopaediaDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
-);
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.AddDbContext<EncyclopaediaDbContext>(options =>
+    options.UseNpgsql(connectionString));
 // ── Identity ──
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 {
