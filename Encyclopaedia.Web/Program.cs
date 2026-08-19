@@ -47,6 +47,14 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+// ── Migration automatique ──
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<EncyclopaediaDbContext>();
+    db.Database.Migrate();
+}
+
 // ── Créer l'admin par défaut ──
 using (var scope = app.Services.CreateScope())
 {
