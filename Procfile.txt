@@ -1,1 +1,1 @@
-web: dotnet out/Encyclopaedia.Web.dll
+web: dotnet /app/out/Encyclopaedia.Web.dll
