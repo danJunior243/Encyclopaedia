@@ -1,0 +1,6 @@
+Slug,DomainId,ParentId,SortOrder,NameFr,NameEn,NameAr
+astronomie,1,0,4,Astronomie,Astronomy,علم الفلك
+antiquite,2,0,1,Antiquite,Antiquity,العصور القديمة
+moyen-age,2,0,2,Moyen Age,Middle Ages,العصور الوسطى
+forets,3,0,1,Forets,Forests,الغابات
+oceans,3,0,2,Oceans,Oceans,المحيطات
