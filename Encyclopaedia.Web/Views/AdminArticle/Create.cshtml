@@ -19,10 +19,11 @@
             <div asp-validation-summary="All" class="login-error"></div>
         }
         <div class="admin-section">
+            
             <div class="form-row">
                 <div class="form-group">
-                    <label asp-for="Title">Titre</label>
-                    <input asp-for="Title" type="text" placeholder="Titre de l'article" />
+                    <label asp-for="Title">Titre / Sujet</label>
+                    <input asp-for="Title" type="text" id="article-subject" placeholder="Ex: La photosynthèse" />
                     <span asp-validation-for="Title" class="field-error"></span>
                 </div>
                 <div class="form-group">
@@ -32,6 +33,14 @@
                     </select>
                     <span asp-validation-for="LanguageId" class="field-error"></span>
                 </div>
+            </div>
+
+            <!-- Bouton IA -->
+            <div style="margin-bottom:1.25rem;">
+                <button type="button" class="btn-ai-generate" id="btn-generate" onclick="generateArticle()">
+                    ✨ Générer avec IA
+                </button>
+                <span id="ai-status" style="font-size:0.82rem; color:var(--text-muted); margin-left:1rem;"></span>
             </div>
 
             <div class="form-group">
@@ -74,6 +83,7 @@
 
 
 @section Scripts {
+    <script src="https://unpkg.com/tinymce@6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         tinymce.init({
             selector: '#content-editor',
@@ -83,5 +93,45 @@
             toolbar: 'undo redo | bold italic underline | bullist numlist | link image table | code',
             content_style: 'body { font-family: Inter, sans-serif; font-size: 14px; }'
         });
+
+        async function generateArticle() {
+            const subject = document.getElementById('article-subject').value.trim();
+            if (!subject) {
+                alert('Veuillez entrer un sujet ou titre avant de générer.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-generate');
+            const status = document.getElementById('ai-status');
+            btn.disabled = true;
+            btn.textContent = '⏳ Génération en cours...';
+            status.textContent = 'Claude rédige votre article...';
+
+            try {
+                const response = await fetch('/AdminArticle/GenerateWithAI', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ subject: subject })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.querySelector('[name="Summary"]').value = data.summary;
+                    tinymce.get('content-editor').setContent(data.content);
+                    status.textContent = '✅ Article généré avec succès !';
+                    status.style.color = 'green';
+                } else {
+                    status.textContent = '❌ Erreur : ' + data.error;
+                    status.style.color = 'red';
+                }
+            } catch (error) {
+                status.textContent = '❌ Erreur de connexion.';
+                status.style.color = 'red';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '✨ Générer avec IA';
+            }
+        }
     </script>
 }

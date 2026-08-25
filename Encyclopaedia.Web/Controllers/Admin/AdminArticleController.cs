@@ -244,6 +244,69 @@ namespace Encyclopaedia.Web.Controllers.Admin
         }
 
 
+        // ── Générer avec IA ──
+        [HttpPost]
+        public async Task<IActionResult> GenerateWithAI([FromBody] GenerateRequest request)
+        {
+            try
+            {
+                var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
+                if (string.IsNullOrEmpty(apiKey))
+                    return Json(new { success = false, error = "Clé API manquante" });
+
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
+                client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
+
+                var prompt = $@"Tu es un rédacteur encyclopédique expert. Rédige un article encyclopédique complet sur le sujet suivant : {request.Subject}
+
+                                Réponds UNIQUEMENT en JSON avec ce format exact :
+                                {{
+                                  ""summary"": ""Un résumé de 2-3 phrases maximum"",
+                                  ""content"": ""Le contenu HTML complet de l'article avec des paragraphes <p>, des titres <h2>, des listes <ul> si nécessaire. Minimum 400 mots.""
+                                }}";
+
+                var body = new
+                {
+                    model = "claude-haiku-4-5-20251001",
+                    max_tokens = 2000,
+                    messages = new[]
+                    {
+                new { role = "user", content = prompt }
+            }
+                };
+
+                var response = await client.PostAsync(
+                    "https://api.anthropic.com/v1/messages",
+                    new StringContent(System.Text.Json.JsonSerializer.Serialize(body),
+                        System.Text.Encoding.UTF8, "application/json")
+                );
+
+                var responseText = await response.Content.ReadAsStringAsync();
+                var responseObj = System.Text.Json.JsonDocument.Parse(responseText);
+                var content = responseObj.RootElement
+                    .GetProperty("content")[0]
+                    .GetProperty("text")
+                    .GetString();
+
+                // Parser le JSON retourné par Claude
+                var articleData = System.Text.Json.JsonDocument.Parse(content!);
+                var summary = articleData.RootElement.GetProperty("summary").GetString();
+                var articleContent = articleData.RootElement.GetProperty("content").GetString();
+
+                return Json(new { success = true, summary, content = articleContent });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
+        public class GenerateRequest
+        {
+            public string Subject { get; set; } = string.Empty;
+        }
+
 
     }
 }

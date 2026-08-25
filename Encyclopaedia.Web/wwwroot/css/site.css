@@ -2128,3 +2128,26 @@ body.dark-mode .suggest-box {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── BOUTON IA ── */
+.btn-ai-generate {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.65rem 1.25rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: var(--font-ui);
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+    .btn-ai-generate:hover {
+        opacity: 0.85;
+    }
+
+    .btn-ai-generate:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
