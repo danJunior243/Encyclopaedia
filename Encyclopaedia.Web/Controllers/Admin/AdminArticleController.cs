@@ -258,12 +258,13 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 client.DefaultRequestHeaders.Add("x-api-key", apiKey);
                 client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
 
-                var prompt = $@"Tu es un rédacteur encyclopédique expert. Rédige un article encyclopédique complet sur le sujet suivant : {request.Subject}
+                    var prompt = $@"Tu es un rédacteur encyclopédique expert. Rédige un article encyclopédique complet et précis sur le sujet suivant : {request.Subject}
 
-                                Réponds UNIQUEMENT en JSON avec ce format exact :
+                                Réponds UNIQUEMENT en JSON sans backticks avec ce format exact :
                                 {{
                                   ""summary"": ""Un résumé de 2-3 phrases maximum"",
-                                  ""content"": ""Le contenu HTML complet de l'article avec des paragraphes <p>, des titres <h2>, des listes <ul> si nécessaire. Minimum 400 mots.""
+                                  ""content"": ""Le contenu HTML complet de l'article avec des paragraphes <p>, des titres <h2>, des listes <ul> si nécessaire. Minimum 400 mots."",
+                                  ""imageQuery"": ""Un mot-clé en anglais pour trouver une image sur Unsplash (ex: biology, history, ocean)""
                                 }}";
 
                 var body = new
@@ -289,20 +290,23 @@ namespace Encyclopaedia.Web.Controllers.Admin
                     .GetProperty("text")
                     .GetString();
 
-                // Nettoyer la réponse de Claude (enlever les backticks)
+                // Nettoyer la réponse de Claude
                 var cleanContent = content!
                     .Replace("```json", "")
                     .Replace("```", "")
                     .Trim();
 
-
-                // Parser le JSON retourné par Claude
-                // Parser le JSON retourné par Claude
+                // Parser le JSON
                 var articleData = System.Text.Json.JsonDocument.Parse(cleanContent);
                 var summary = articleData.RootElement.GetProperty("summary").GetString();
                 var articleContent = articleData.RootElement.GetProperty("content").GetString();
+                var imageQuery = articleData.RootElement.GetProperty("imageQuery").GetString();
 
-                return Json(new { success = true, summary, content = articleContent });
+                var imageUrl = !string.IsNullOrEmpty(imageQuery)
+                    ? $"https://source.unsplash.com/1200x600/?{Uri.EscapeDataString(imageQuery)}"
+                    : "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80";
+
+                return Json(new { success = true, summary, content = articleContent, imageUrl });
             }
             catch (Exception ex)
             {
