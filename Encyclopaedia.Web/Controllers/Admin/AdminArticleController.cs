@@ -289,8 +289,16 @@ namespace Encyclopaedia.Web.Controllers.Admin
                     .GetProperty("text")
                     .GetString();
 
+                // Nettoyer la réponse de Claude (enlever les backticks)
+                var cleanContent = content!
+                    .Replace("```json", "")
+                    .Replace("```", "")
+                    .Trim();
+
+
                 // Parser le JSON retourné par Claude
-                var articleData = System.Text.Json.JsonDocument.Parse(content!);
+                // Parser le JSON retourné par Claude
+                var articleData = System.Text.Json.JsonDocument.Parse(cleanContent);
                 var summary = articleData.RootElement.GetProperty("summary").GetString();
                 var articleContent = articleData.RootElement.GetProperty("content").GetString();
 
