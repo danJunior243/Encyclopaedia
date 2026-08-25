@@ -64,6 +64,17 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EncyclopaediaDbContext>();
     db.Database.Migrate();
+
+
+    if (!db.Languages.Any())
+    {
+        db.Languages.AddRange(
+            new Encyclopaedia.Core.Entities.Language { Code = "fr", Name = "Français", IsDefault = true, IsActive = true },
+            new Encyclopaedia.Core.Entities.Language { Code = "en", Name = "English", IsDefault = false, IsActive = true },
+            new Encyclopaedia.Core.Entities.Language { Code = "ar", Name = "العربية", IsDefault = false, IsActive = true }
+        );
+        db.SaveChanges();
+    }
 }
 
 // ── Créer l'admin par défaut ──
