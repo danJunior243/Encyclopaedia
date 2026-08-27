@@ -302,9 +302,27 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 var articleContent = articleData.RootElement.GetProperty("content").GetString();
                 var imageQuery = articleData.RootElement.GetProperty("imageQuery").GetString();
 
-                var imageUrl = !string.IsNullOrEmpty(imageQuery)
-                    ? $"https://source.unsplash.com/1200x600/?{Uri.EscapeDataString(imageQuery)}"
-                    : "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80";
+                // Récupérer une image depuis Unsplash
+                var unsplashKey = Environment.GetEnvironmentVariable("UNSPLASH_ACCESS_KEY");
+                var imageUrl = "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80";
+
+                if (!string.IsNullOrEmpty(unsplashKey) && !string.IsNullOrEmpty(imageQuery))
+                {
+                    try
+                    {
+                        var unsplashClient = new HttpClient();
+                        var unsplashResponse = await unsplashClient.GetAsync(
+                            $"https://api.unsplash.com/photos/random?query={Uri.EscapeDataString(imageQuery)}&client_id={unsplashKey}&orientation=landscape"
+                        );
+                        var unsplashText = await unsplashResponse.Content.ReadAsStringAsync();
+                        var unsplashData = System.Text.Json.JsonDocument.Parse(unsplashText);
+                        imageUrl = unsplashData.RootElement
+                            .GetProperty("urls")
+                            .GetProperty("regular")
+                            .GetString() ?? imageUrl;
+                    }
+                    catch { }
+                }
 
                 return Json(new { success = true, summary, content = articleContent, imageUrl });
             }
