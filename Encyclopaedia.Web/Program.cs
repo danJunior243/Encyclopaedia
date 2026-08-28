@@ -42,10 +42,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 
 // ── Localisation ──
 // ── Localisation ──
+
+// ── Localisation multilingue (fr, en, ar) ──
+
 var supportedCultures = new[] { "fr", "en", "ar" };
 builder.Services.AddLocalization();
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
+
+    // Langue par défaut : français
     options.SetDefaultCulture("fr")
            .AddSupportedCultures(supportedCultures)
            .AddSupportedUICultures(supportedCultures);
@@ -64,6 +69,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+// Active le middleware de localisation — détecte la langue depuis l'URL
 app.UseRequestLocalization();
 
 app.UseAuthentication();
@@ -126,6 +132,7 @@ app.MapControllerRoute(
     defaults: new { controller = "Article", action = "Index" }
 );
 
+// Route multilingue — ex: /fr/home, /en/article, /ar/search
 app.MapControllerRoute(
     name: "localized",
     pattern: "{lang:regex(^(fr|en|ar)$)}/{controller=Home}/{action=Index}/{id?}"
