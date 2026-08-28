@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37012.4 d17.14
+VisualStudioVersion = 17.14.37012.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encyclopaedia.Web", "Encyclopaedia.Web\Encyclopaedia.Web.csproj", "{40091604-3408-4B9D-AEBE-072FBE840C92}"
 EndProject
@@ -12,6 +12,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Encyclopaedia.Services", "Encyclopaedia.Services\Encyclopaedia.Services.csproj", "{6A3E17C9-D5AB-4C33-84B6-7B9BAF8D94D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Projet_de_test_xUnit", "Projet_de_test_xUnit\Projet_de_test_xUnit.csproj", "{8ABBDE68-26B6-4B19-A6FD-DADE5EA0F976}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{9C8CB701-102D-CF49-A3E0-89AC09D42C2C}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile.txt = Dockerfile.txt
+		global.json = global.json
+		Procfile.txt = Procfile.txt
+		railway.json = railway.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

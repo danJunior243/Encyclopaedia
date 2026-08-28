@@ -4,6 +4,8 @@ using Encyclopaedia.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +40,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
 .AddEntityFrameworkStores<EncyclopaediaDbContext>()
 .AddDefaultTokenProviders();
 
+// ── Localisation ──
+// ── Localisation ──
+var supportedCultures = new[] { "fr", "en", "ar" };
+builder.Services.AddLocalization();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.SetDefaultCulture("fr")
+           .AddSupportedCultures(supportedCultures)
+           .AddSupportedUICultures(supportedCultures);
+});
+
 var app = builder.Build();
 
 // ── Pipeline ──
@@ -50,6 +63,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseRequestLocalization();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -111,8 +126,20 @@ app.MapControllerRoute(
     defaults: new { controller = "Article", action = "Index" }
 );
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-app.Run($"http://0.0.0.0:{port}");
+app.MapControllerRoute(
+    name: "localized",
+    pattern: "{lang:regex(^(fr|en|ar)$)}/{controller=Home}/{action=Index}/{id?}"
+);
+
+if (app.Environment.IsDevelopment())
+{
+    app.Run();
+}
+else
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    app.Run($"http://0.0.0.0:{port}");
+}
 
 
 
