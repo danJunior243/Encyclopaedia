@@ -138,6 +138,10 @@ app.MapControllerRoute(
     pattern: "{lang:regex(^(fr|en|ar)$)}/{controller=Home}/{action=Index}/{id?}"
 );
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 if (app.Environment.IsDevelopment())
 {
     app.Run();
