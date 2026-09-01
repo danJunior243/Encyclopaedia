@@ -334,7 +334,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
 
         // ── Traduire un article avec IA ──
         [HttpPost]
-        public async Task<IActionResult> TranslateWithAI(int articleId, string targetLang)
+        public async Task<IActionResult> TranslateWithAI([FromBody] TranslateRequest request)
         {
             try
             {
@@ -342,11 +342,11 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 // Debug — voir tous les articles disponibles
                 var allTranslations = await _context.ArticleTranslations
                     .Include(t => t.Article)
-                    .Where(t => t.ArticleId == articleId)
+                    .Where(t => t.ArticleId == request.ArticleId)
                     .ToListAsync();
 
                 if (!allTranslations.Any())
-                    return Json(new { success = false, error = $"Aucune traduction trouvée pour ArticleId={articleId}" });
+                    return Json(new { success = false, error = $"Aucune traduction trouvée pour ArticleId={request.ArticleId}" });
 
                 var frTranslation = allTranslations.FirstOrDefault(t => t.LanguageId == 1);
 
@@ -355,13 +355,13 @@ namespace Encyclopaedia.Web.Controllers.Admin
 
                 // Vérifier si la traduction existe déjà
                 var targetLanguage = await _context.Languages
-                    .FirstOrDefaultAsync(l => l.Code == targetLang);
+                    .FirstOrDefaultAsync(l => l.Code == request.TargetLang);
 
                 if (targetLanguage == null)
                     return Json(new { success = false, error = "Langue cible introuvable" });
 
                 var existingTranslation = await _context.ArticleTranslations
-                    .FirstOrDefaultAsync(t => t.ArticleId == articleId && t.LanguageId == targetLanguage.LanguageId);
+                    .FirstOrDefaultAsync(t => t.ArticleId == request.ArticleId && t.LanguageId == targetLanguage.LanguageId);
 
                 var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
                 if (string.IsNullOrEmpty(apiKey))
@@ -371,7 +371,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 client.DefaultRequestHeaders.Add("x-api-key", apiKey);
                 client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
 
-                var langName = targetLang == "en" ? "English" : "Arabic";
+                var langName = request.TargetLang == "en" ? "English" : "Arabic";
 
                 var prompt = $@"Translate the following encyclopedia article from French to {langName}.
                     Return ONLY a JSON object without backticks in this exact format:
@@ -434,7 +434,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                     // Créer une nouvelle traduction
                     var newTranslation = new Encyclopaedia.Core.Entities.ArticleTranslation
                     {
-                        ArticleId = articleId,
+                        ArticleId = request.ArticleId,
                         LanguageId = targetLanguage.LanguageId,
                         Title = translatedTitle ?? frTranslation.Title,
                         Summary = translatedSummary ?? frTranslation.Summary,
@@ -459,5 +459,11 @@ namespace Encyclopaedia.Web.Controllers.Admin
         }
 
 
+    }
+
+    public class TranslateRequest
+    {
+        public int ArticleId { get; set; }
+        public string TargetLang { get; set; } = string.Empty;
     }
 }
