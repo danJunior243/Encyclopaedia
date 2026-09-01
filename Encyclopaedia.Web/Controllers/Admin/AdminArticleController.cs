@@ -342,7 +342,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 var frTranslation = await _context.ArticleTranslations
                     .Include(t => t.Article)
                     .Include(t => t.Language)
-                    .FirstOrDefaultAsync(t => t.ArticleId == articleId && t.Language.Code == "fr");
+                    .FirstOrDefaultAsync(t => t.ArticleId == articleId && t.LanguageId == 1);
 
                 if (frTranslation == null)
                     return Json(new { success = false, error = "Article français introuvable" });
