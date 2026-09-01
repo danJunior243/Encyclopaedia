@@ -341,6 +341,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 // Récupérer l'article en français
                 var frTranslation = await _context.ArticleTranslations
                     .Include(t => t.Article)
+                    .Include(t => t.Language)
                     .FirstOrDefaultAsync(t => t.ArticleId == articleId && t.Language.Code == "fr");
 
                 if (frTranslation == null)
