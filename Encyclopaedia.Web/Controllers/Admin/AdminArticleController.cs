@@ -332,6 +332,120 @@ namespace Encyclopaedia.Web.Controllers.Admin
             }
         }
 
+        // ── Traduire un article avec IA ──
+        [HttpPost]
+        public async Task<IActionResult> TranslateWithAI(int articleId, string targetLang)
+        {
+            try
+            {
+                // Récupérer l'article en français
+                var frTranslation = await _context.ArticleTranslations
+                    .Include(t => t.Article)
+                    .FirstOrDefaultAsync(t => t.ArticleId == articleId && t.Language.Code == "fr");
+
+                if (frTranslation == null)
+                    return Json(new { success = false, error = "Article français introuvable" });
+
+                // Vérifier si la traduction existe déjà
+                var targetLanguage = await _context.Languages
+                    .FirstOrDefaultAsync(l => l.Code == targetLang);
+
+                if (targetLanguage == null)
+                    return Json(new { success = false, error = "Langue cible introuvable" });
+
+                var existingTranslation = await _context.ArticleTranslations
+                    .FirstOrDefaultAsync(t => t.ArticleId == articleId && t.LanguageId == targetLanguage.LanguageId);
+
+                var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
+                if (string.IsNullOrEmpty(apiKey))
+                    return Json(new { success = false, error = "Clé API manquante" });
+
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
+                client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
+
+                var langName = targetLang == "en" ? "English" : "Arabic";
+
+                var prompt = $@"Translate the following encyclopedia article from French to {langName}.
+                    Return ONLY a JSON object without backticks in this exact format:
+                    {{
+                      ""title"": ""translated title"",
+                      ""summary"": ""translated summary"",
+                      ""content"": ""translated HTML content""
+                    }}
+
+                    French title: {frTranslation.Title}
+                    French summary: {frTranslation.Summary}
+                    French content: {frTranslation.Content}";
+
+                var body = new
+                {
+                    model = "claude-haiku-4-5-20251001",
+                    max_tokens = 3000,
+                    messages = new[]
+                    {
+                new { role = "user", content = prompt }
+            }
+                };
+
+                var response = await client.PostAsync(
+                    "https://api.anthropic.com/v1/messages",
+                    new StringContent(System.Text.Json.JsonSerializer.Serialize(body),
+                        System.Text.Encoding.UTF8, "application/json")
+                );
+
+                var responseText = await response.Content.ReadAsStringAsync();
+                var responseObj = System.Text.Json.JsonDocument.Parse(responseText);
+                var content = responseObj.RootElement
+                    .GetProperty("content")[0]
+                    .GetProperty("text")
+                    .GetString();
+
+                var cleanContent = content!
+                    .Replace("```json", "")
+                    .Replace("```", "")
+                    .Trim();
+
+                var translationData = System.Text.Json.JsonDocument.Parse(cleanContent);
+                var translatedTitle = translationData.RootElement.GetProperty("title").GetString();
+                var translatedSummary = translationData.RootElement.GetProperty("summary").GetString();
+                var translatedContent = translationData.RootElement.GetProperty("content").GetString();
+
+                var slugHelper = new Slugify.SlugHelper();
+                var slug = slugHelper.GenerateSlug(translatedTitle ?? frTranslation.Title);
+
+                if (existingTranslation != null)
+                {
+                    // Mettre à jour la traduction existante
+                    existingTranslation.Title = translatedTitle ?? frTranslation.Title;
+                    existingTranslation.Summary = translatedSummary ?? frTranslation.Summary;
+                    existingTranslation.Content = translatedContent ?? frTranslation.Content;
+                    existingTranslation.Slug = slug;
+                }
+                else
+                {
+                    // Créer une nouvelle traduction
+                    var newTranslation = new Encyclopaedia.Core.Entities.ArticleTranslation
+                    {
+                        ArticleId = articleId,
+                        LanguageId = targetLanguage.LanguageId,
+                        Title = translatedTitle ?? frTranslation.Title,
+                        Summary = translatedSummary ?? frTranslation.Summary,
+                        Content = translatedContent ?? frTranslation.Content,
+                        Slug = slug
+                    };
+                    _context.ArticleTranslations.Add(newTranslation);
+                }
+
+                await _context.SaveChangesAsync();
+                return Json(new { success = true, message = $"Article traduit en {langName} avec succès !" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, error = ex.Message });
+            }
+        }
+
         public class GenerateRequest
         {
             public string Subject { get; set; } = string.Empty;

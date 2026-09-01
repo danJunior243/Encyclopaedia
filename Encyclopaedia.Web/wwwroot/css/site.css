@@ -2151,3 +2151,17 @@ body.dark-mode .suggest-box {
         opacity: 0.5;
         cursor: not-allowed;
     }
+
+/* ── BOUTON TRADUCTION ── */
+.btn-translate {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.2rem;
+    transition: transform 0.2s;
+}
+
+    .btn-translate:hover {
+        transform: scale(1.2);
+    }

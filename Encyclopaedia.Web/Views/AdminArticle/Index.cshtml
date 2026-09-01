@@ -88,6 +88,8 @@
                             <td>@article.ViewCount</td>
                             <td>
                                 <a asp-controller="AdminArticle" asp-action="Edit" asp-route-id="@article.Id">✏️</a>
+                                <button onclick="translateArticle(@article.Id, 'en')" class="btn-translate" title="Traduire en anglais">🇬🇧</button>
+                                <button onclick="translateArticle(@article.Id, 'ar')" class="btn-translate" title="Traduire en arabe">🇸🇦</button>
                                 @if (article.Status == Encyclopaedia.Core.Enums.ArticleStatus.Draft ||
                                                         article.Status == Encyclopaedia.Core.Enums.ArticleStatus.Review)
                                 {
@@ -112,3 +114,25 @@
     </div>
 
 </div>
+
+@section Scripts {
+    <script>
+        async function translateArticle(articleId, lang) {
+            const langName = lang === 'en' ? 'anglais' : 'arabe';
+            if (!confirm(`Traduire cet article en ${langName} avec IA ?`)) return;
+
+            const response = await fetch('/AdminArticle/TranslateWithAI', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ articleId: articleId, targetLang: lang })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('✅ ' + data.message);
+            } else {
+                alert('❌ Erreur : ' + data.error);
+            }
+        }
+    </script>
+}
