@@ -338,14 +338,20 @@ namespace Encyclopaedia.Web.Controllers.Admin
         {
             try
             {
-                // Récupérer l'article en français
-                var frTranslation = await _context.ArticleTranslations
+                
+                // Debug — voir tous les articles disponibles
+                var allTranslations = await _context.ArticleTranslations
                     .Include(t => t.Article)
-                    .Include(t => t.Language)
-                    .FirstOrDefaultAsync(t => t.ArticleId == articleId && t.LanguageId == 1);
+                    .Where(t => t.ArticleId == articleId)
+                    .ToListAsync();
+
+                if (!allTranslations.Any())
+                    return Json(new { success = false, error = $"Aucune traduction trouvée pour ArticleId={articleId}" });
+
+                var frTranslation = allTranslations.FirstOrDefault(t => t.LanguageId == 1);
 
                 if (frTranslation == null)
-                    return Json(new { success = false, error = "Article français introuvable" });
+                    return Json(new { success = false, error = $"Traductions trouvées: {string.Join(", ", allTranslations.Select(t => $"Lang={t.LanguageId}"))} mais pas de FR" });
 
                 // Vérifier si la traduction existe déjà
                 var targetLanguage = await _context.Languages
