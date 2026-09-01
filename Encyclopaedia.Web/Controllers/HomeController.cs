@@ -37,26 +37,26 @@ namespace Encyclopaedia.Web.Controllers
             var viewModel = new HomeViewModel
             {
                 RecentArticles = await _context.Articles
-                    .Include(a => a.Category)
-                        .ThenInclude(c => c.Domain)
-                            .ThenInclude(d => d.Translations)
-                    .Include(a => a.Translations)
-                    .Where(a => a.Statut == ArticleStatus.Published)
-                    .Where(a => a.Translations.Any(t => t.LanguageId == langId))
-                    .OrderByDescending(a => a.PublishAt)
-                    .Take(5)
-                    .ToListAsync(),
+                .Include(a => a.Category)
+                    .ThenInclude(c => c.Domain)
+                        .ThenInclude(d => d.Translations)
+                .Include(a => a.Translations.Where(t => t.LanguageId == langId))
+                .Where(a => a.Statut == ArticleStatus.Published)
+                .Where(a => a.Translations.Any(t => t.LanguageId == langId))
+                .OrderByDescending(a => a.PublishAt)
+                .Take(5)
+                .ToListAsync(),
 
-                PopularArticles = await _context.Articles
-                    .Include(a => a.Category)
-                        .ThenInclude(c => c.Domain)
-                            .ThenInclude(d => d.Translations)
-                    .Include(a => a.Translations)
-                    .Where(a => a.Statut == ArticleStatus.Published)
-                    .Where(a => a.Translations.Any(t => t.LanguageId == langId))
-                    .OrderByDescending(a => a.ViewCount)
-                    .Take(5)
-                    .ToListAsync()
+                            PopularArticles = await _context.Articles
+                .Include(a => a.Category)
+                    .ThenInclude(c => c.Domain)
+                        .ThenInclude(d => d.Translations)
+                .Include(a => a.Translations.Where(t => t.LanguageId == langId))
+                .Where(a => a.Statut == ArticleStatus.Published)
+                .Where(a => a.Translations.Any(t => t.LanguageId == langId))
+                .OrderByDescending(a => a.ViewCount)
+                .Take(5)
+                .ToListAsync()
             };
 
             ViewBag.TotalArticles = await _context.Articles
