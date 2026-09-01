@@ -14,7 +14,10 @@ namespace Encyclopaedia.Web.Helpers
             var cultureCookie = request.Cookies[".AspNetCore.Culture"];
             if (cultureCookie == null) return "fr";
 
-            var parts = cultureCookie.Split("|");
+            // Décoder l'URL encoding du cookie
+            var decoded = WebUtility.UrlDecode(cultureCookie);
+
+            var parts = decoded.Split("|");
             foreach (var part in parts)
             {
                 if (part.StartsWith("c="))
@@ -23,7 +26,6 @@ namespace Encyclopaedia.Web.Helpers
 
             return "fr";
         }
-
 
     }
 }
