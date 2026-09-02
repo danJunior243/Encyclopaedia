@@ -258,14 +258,24 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 client.DefaultRequestHeaders.Add("x-api-key", apiKey);
                 client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
 
-                    var prompt = $@"Tu es un rédacteur encyclopédique expert. Rédige un article encyclopédique complet et précis sur le sujet suivant : {request.Subject}
+                var langInstruction = request.Language == "en"
+                    ? "Write the article in English."
+                    : request.Language == "ar"
+                        ? "اكتب المقال باللغة العربية."
+                        : "Rédige l'article en français.";
 
-                                Réponds UNIQUEMENT en JSON sans backticks avec ce format exact :
-                                {{
-                                  ""summary"": ""Un résumé de 2-3 phrases maximum"",
-                                  ""content"": ""Le contenu HTML complet de l'article avec des paragraphes <p>, des titres <h2>, des listes <ul> si nécessaire. Minimum 400 mots."",
-                                  ""imageQuery"": ""Un mot-clé en anglais pour trouver une image sur Unsplash (ex: biology, history, ocean)""
-                                }}";
+
+
+
+
+                var prompt = $@"{langInstruction} You are an expert encyclopedic writer. Write a complete and accurate encyclopedic article on the following subject: {request.Subject}
+
+                    Respond ONLY in JSON without backticks in this exact format:
+                    {{
+                      ""summary"": ""A summary of 2-3 sentences maximum"",
+                      ""content"": ""The complete HTML content of the article with <p> paragraphs, <h2> titles, <ul> lists if necessary. Minimum 400 words."",
+                      ""imageQuery"": ""A keyword in English to find an image on Unsplash (ex: biology, history, ocean)""
+                    }}";
 
                 var body = new
                 {
@@ -453,9 +463,12 @@ namespace Encyclopaedia.Web.Controllers.Admin
             }
         }
 
+        // On passe la langue et le sujet a generer au controller de tel sorte que l'api saura quelle langue il faudra utiliser pour 
+        // Generer les articles
         public class GenerateRequest
         {
             public string Subject { get; set; } = string.Empty;
+            public string Language { get; set; } = "fr";
         }
 
 

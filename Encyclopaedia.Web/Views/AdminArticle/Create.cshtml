@@ -94,12 +94,17 @@
             content_style: 'body { font-family: Inter, sans-serif; font-size: 14px; }'
         });
 
-        async function generateArticle() {
+               async function generateArticle() {
             const subject = document.getElementById('article-subject').value.trim();
             if (!subject) {
                 alert('Veuillez entrer un sujet ou titre avant de générer.');
                 return;
             }
+
+            // Récupérer la langue choisie
+            const langId = document.querySelector('[name="LanguageId"]').value;
+            const langMap = { '1': 'fr', '2': 'en', '3': 'ar' };
+            const lang = langMap[langId] || 'fr';
 
             const btn = document.getElementById('btn-generate');
             const status = document.getElementById('ai-status');
@@ -111,28 +116,23 @@
                 const response = await fetch('/AdminArticle/GenerateWithAI', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ subject: subject })
+                    body: JSON.stringify({ subject: subject, language: lang })
                 });
 
                 const data = await response.json();
 
-                if (data.success) 
-                {
-                            document.querySelector('[name="Summary"]').value = data.summary;
-                            tinymce.get('content-editor').setContent(data.content);
-                            if (data.imageUrl) {
-                                document.querySelector('[name="FeaturedImage"]').value = data.imageUrl;
-                            }
-                            status.textContent = '✅ Article généré avec succès !';
-                            status.style.color = 'green';
-                } 
-                else 
-                {
-                            status.textContent = '❌ Erreur : ' + data.error;
-                            status.style.color = 'red';
-                
-                 }
-
+                if (data.success) {
+                    document.querySelector('[name="Summary"]').value = data.summary;
+                    tinymce.get('content-editor').setContent(data.content);
+                    if (data.imageUrl) {
+                        document.querySelector('[name="FeaturedImage"]').value = data.imageUrl;
+                    }
+                    status.textContent = '✅ Article généré avec succès !';
+                    status.style.color = 'green';
+                } else {
+                    status.textContent = '❌ Erreur : ' + data.error;
+                    status.style.color = 'red';
+                }
             } catch (error) {
                 status.textContent = '❌ Erreur de connexion.';
                 status.style.color = 'red';
