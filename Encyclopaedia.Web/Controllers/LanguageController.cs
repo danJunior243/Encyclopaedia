@@ -17,6 +17,7 @@ namespace Encyclopaedia.Web.Controllers
         // ── Changer la langue de l'utilisateur ──
         public async Task< IActionResult> Set(string lang, string returnUrl = "/")
         {
+
             // Sauvegarder la langue dans un cookie
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
@@ -25,34 +26,31 @@ namespace Encyclopaedia.Web.Controllers
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
             );
 
-            // Si on est sur une page article — trouver la traduction
             if (returnUrl.StartsWith("/article/"))
             {
                 var currentSlug = returnUrl.Replace("/article/", "");
-
-                // Trouver l'article via le slug actuel
                 var currentTranslation = await _context.ArticleTranslations
                     .FirstOrDefaultAsync(t => t.Slug == currentSlug);
 
-                if (currentTranslation != null)
-                {
-                    // Chercher la traduction dans la nouvelle langue
-                    var targetLanguage = await _context.Languages
-                        .FirstOrDefaultAsync(l => l.Code == lang);
+                if (currentTranslation == null)
+                    return LocalRedirect($"/?debug=slug-not-found-{currentSlug}");
 
-                    if (targetLanguage != null)
-                    {
-                        var targetTranslation = await _context.ArticleTranslations
-                            .FirstOrDefaultAsync(t => t.ArticleId == currentTranslation.ArticleId
-                                && t.LanguageId == targetLanguage.LanguageId);
+                var targetLanguage = await _context.Languages
+                    .FirstOrDefaultAsync(l => l.Code == lang);
 
-                        if (targetTranslation != null)
-                            return LocalRedirect($"/article/{targetTranslation.Slug}");
-                    }
-                }
+                if (targetLanguage == null)
+                    return LocalRedirect($"/?debug=lang-not-found-{lang}");
+
+                var targetTranslation = await _context.ArticleTranslations
+                    .FirstOrDefaultAsync(t => t.ArticleId == currentTranslation.ArticleId
+                        && t.LanguageId == targetLanguage.LanguageId);
+
+                if (targetTranslation == null)
+                    return LocalRedirect($"/?debug=no-translation-for-article-{currentTranslation.ArticleId}-lang-{targetLanguage.LanguageId}");
+
+                return LocalRedirect($"/article/{targetTranslation.Slug}");
             }
 
-            // Rediriger vers la page précédente ou l'accueil
             if (string.IsNullOrEmpty(returnUrl) || !returnUrl.StartsWith("/"))
                 returnUrl = "/";
 
