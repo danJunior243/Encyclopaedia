@@ -75,11 +75,6 @@ app.UseRequestLocalization();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
 // ── Migration automatique ──
 using (var scope = app.Services.CreateScope())
 {
@@ -132,7 +127,6 @@ app.MapControllerRoute(
     defaults: new { controller = "Article", action = "Index" }
 );
 
-// Route multilingue — ex: /fr/home, /en/article, /ar/search
 app.MapControllerRoute(
     name: "localized",
     pattern: "{lang:regex(^(fr|en|ar)$)}/{controller=Home}/{action=Index}/{id?}"
@@ -151,6 +145,3 @@ else
     var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
     app.Run($"http://0.0.0.0:{port}");
 }
-
-
-
