@@ -8,6 +8,7 @@ namespace Encyclopaedia.Web.Controllers
 
     // Ce controller nous permet de gerer un seul article de notre encyclopedie
 
+    [Route("article")]
     public class ArticleController : Controller
     {
         private readonly EncyclopaediaDbContext _context;
@@ -16,6 +17,8 @@ namespace Encyclopaedia.Web.Controllers
             _context = context;
         }
 
+
+        [Route("{slug}")]
         public async Task<IActionResult> Index(string slug, string lang = "fr")
         {
             // Récupérer la langue depuis le cookie ou l'URL
