@@ -45,10 +45,20 @@ namespace Encyclopaedia.Web.Controllers.Admin
             ViewBag.StatusData = viewModel.ArticlesByStatus.Values.ToList();
 
             return View(viewModel);
+
+
+
         }
+
+        public class TranslateAllRequest
+        {
+            public string TargetLang { get; set; } = string.Empty;
+        }
+
+
         // ── Traduire tous les articles en masse ──
         [HttpPost]
-        public async Task<IActionResult> TranslateAll(string targetLang)
+        public async Task<IActionResult> TranslateAll([FromBody] TranslateAllRequest request)
         {
             try
             {
@@ -57,7 +67,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                     return Json(new { success = false, error = "Clé API manquante" });
 
                 var targetLanguage = await _context.Languages
-                    .FirstOrDefaultAsync(l => l.Code == targetLang);
+                    .FirstOrDefaultAsync(l => l.Code == request.TargetLang);
 
                 if (targetLanguage == null)
                     return Json(new { success = false, error = "Langue cible introuvable" });
@@ -84,7 +94,7 @@ namespace Encyclopaedia.Web.Controllers.Admin
                         client.DefaultRequestHeaders.Add("x-api-key", apiKey);
                         client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
 
-                        var langName = targetLang == "en" ? "English" : "Arabic";
+                        var langName = request.TargetLang == "en" ? "English" : "Arabic";
 
                         var prompt = $@"Translate the following encyclopedia article from French to {langName}.
 Return ONLY a JSON object without backticks in this exact format:
