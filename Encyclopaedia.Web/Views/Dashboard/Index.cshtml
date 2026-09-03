@@ -71,6 +71,23 @@
         </div>
     </div>
 
+    <!-- ── TRADUCTION EN MASSE ── -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">Traduction en masse</h2>
+        <p style="font-size:0.85rem; color:#666; margin-bottom:1rem;">
+            Traduit automatiquement tous les articles non traduits via Claude IA.
+        </p>
+        <div style="display:flex; gap:1rem;">
+            <button onclick="translateAll('en')" class="btn-admin-add">
+                🇬🇧 Traduire tout en anglais
+            </button>
+            <button onclick="translateAll('ar')" class="btn-admin-add">
+                🇸🇦 Traduire tout en arabe
+            </button>
+        </div>
+        <div id="translate-status" style="margin-top:1rem; font-size:0.85rem;"></div>
+    </div>
+
 
 </div>
 
@@ -112,5 +129,38 @@
                 plugins: { legend: { position: 'bottom' } }
             }
         });
+
+        async function translateAll(lang) {
+            const langName = lang === 'en' ? 'anglais' : 'arabe';
+            if (!confirm(`Traduire tous les articles non traduits en ${langName} ? Cela peut prendre plusieurs minutes.`)) return;
+
+            const status = document.getElementById('translate-status');
+            status.textContent = '⏳ Traduction en cours... Veuillez patienter.';
+            status.style.color = 'orange';
+
+            try {
+                const response = await fetch('/Admin/Dashboard/TranslateAll', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ targetLang: lang })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    status.textContent = `✅ ${data.message}`;
+                    status.style.color = 'green';
+                } else {
+                    status.textContent = `❌ Erreur : ${data.error}`;
+                    status.style.color = 'red';
+                }
+            } catch (error) {
+                status.textContent = '❌ Erreur de connexion.';
+                status.style.color = 'red';
+            }
+        }
+
+
+
     </script>
 }
