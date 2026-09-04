@@ -2165,3 +2165,24 @@ body.dark-mode .suggest-box {
     .btn-translate:hover {
         transform: scale(1.2);
     }
+
+.enc-logo {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.enc-logo-icon {
+    font-size: 1.8rem;
+}
+
+.enc-logo-text {
+    font-family: var(--font-serif);
+    font-weight: 900;
+}
