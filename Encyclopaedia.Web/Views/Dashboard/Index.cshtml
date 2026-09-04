@@ -135,7 +135,7 @@
         });
 
         async function translateAll(lang) {
-            const langName = lang === 'en' ? 'anglais' : 'arabe';
+            const langName = lang === 'en' ? 'anglais' : lang === 'fr' ? 'français' : 'arabe';
             if (!confirm(`Traduire tous les articles non traduits en ${langName} ? Cela peut prendre plusieurs minutes.`)) return;
 
             const status = document.getElementById('translate-status');
