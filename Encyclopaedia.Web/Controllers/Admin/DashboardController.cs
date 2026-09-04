@@ -85,7 +85,8 @@ namespace Encyclopaedia.Web.Controllers.Admin
                 foreach (var article in articlesWithoutTranslation)
                 {
                     // Récupérer la traduction française
-                    var frTranslation = article.Translations.FirstOrDefault(t => t.LanguageId == 1);
+                    var frTranslation = article.Translations.FirstOrDefault(t => t.LanguageId == 1)
+                        ?? article.Translations.FirstOrDefault();
                     if (frTranslation == null) continue;
 
                     try
@@ -94,20 +95,21 @@ namespace Encyclopaedia.Web.Controllers.Admin
                         client.DefaultRequestHeaders.Add("x-api-key", apiKey);
                         client.DefaultRequestHeaders.Add("anthropic-version", "2023-06-01");
 
-                        var langName = request.TargetLang == "en" ? "English" : "Arabic";
+                        // Détecter la langue source
+                        var sourceLang = frTranslation.LanguageId == 1 ? "French" : "English";
+                        var langName = request.TargetLang == "en" ? "English" : request.TargetLang == "fr" ? "French" : "Arabic";
 
-                        var prompt = $@"Translate the following encyclopedia article from French to {langName}.
-Return ONLY a JSON object without backticks in this exact format:
-{{
-  ""title"": ""translated title"",
-  ""summary"": ""translated summary"",
-  ""content"": ""translated HTML content""
-}}
+                        var prompt = $@"Translate the following encyclopedia article from {sourceLang} to {langName}.
+                            Return ONLY a JSON object without backticks in this exact format:
+                            {{
+                              ""title"": ""translated title"",
+                              ""summary"": ""translated summary"",
+                              ""content"": ""translated HTML content""
+                            }}
 
-French title: {frTranslation.Title}
-French summary: {frTranslation.Summary}
-French content: {frTranslation.Content}";
-
+                            {sourceLang} title: {frTranslation.Title}
+                            {sourceLang} summary: {frTranslation.Summary}
+                            {sourceLang} content: {frTranslation.Content}";
                         var body = new
                         {
                             model = "claude-haiku-4-5-20251001",
